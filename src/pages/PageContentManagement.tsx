@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FileText, Save, Eye, EyeOff, Plus, Trash2, Edit2, Check } from 'lucide-react';
+import { FileText, Save, Eye, EyeOff, Trash2, Edit2, Check } from 'lucide-react';
 import ContentFieldEditor from '../components/ContentFieldEditor';
 
 const API_URL = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000').replace(/\/$/, '');

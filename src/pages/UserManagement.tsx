@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Users, Plus, Trash2, Shield, User, Mail, Calendar, Check, X, Crown, UserCircle } from 'lucide-react';
+import { Users, Plus, Trash2, User, Mail, Calendar, Check, X, Crown, UserCircle } from 'lucide-react';
 
 const API_URL = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000').replace(/\/$/, '');
 
@@ -144,8 +144,8 @@ const UserManagement: React.FC = () => {
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-4">
                   <div className={`w-16 h-16 rounded-full flex items-center justify-center ${admin.role === 'super'
-                      ? 'bg-gradient-to-br from-yellow-500 to-orange-600'
-                      : 'bg-gradient-to-br from-blue-500 to-purple-600'
+                    ? 'bg-gradient-to-br from-yellow-500 to-orange-600'
+                    : 'bg-gradient-to-br from-blue-500 to-purple-600'
                     }`}>
                     {admin.role === 'super' ? (
                       <Crown size={28} className="text-white" />
@@ -157,8 +157,8 @@ const UserManagement: React.FC = () => {
                     <h3 className="text-xl font-bold text-white">{admin.username}</h3>
                     <div className="flex items-center gap-2 mt-1">
                       <span className={`px-3 py-1 text-xs font-semibold rounded-full ${admin.role === 'super'
-                          ? 'bg-yellow-500/20 text-yellow-300 border border-yellow-500'
-                          : 'bg-blue-500/20 text-blue-300 border border-blue-500'
+                        ? 'bg-yellow-500/20 text-yellow-300 border border-yellow-500'
+                        : 'bg-blue-500/20 text-blue-300 border border-blue-500'
                         }`}>
                         {admin.role === 'super' ? '👑 Super Admin' : '🛡️ Admin'}
                       </span>

@@ -12,8 +12,36 @@ interface Submission {
   [key: string]: any;
 }
 
-const SubmissionsPage: React.FC = () => {
-  const [activeTab, setActiveTab] = useState('contacts');
+interface ColumnConfig {
+  key: string;
+  label: string;
+  render?: (value: any) => string;
+}
+
+interface SubmissionsPageProps {
+  title?: string;
+  endpoint?: string;
+  columns?: ColumnConfig[];
+}
+
+const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ title = "Submissions Manager", endpoint = "contacts", columns = [
+  { key: 'name', label: 'Name' },
+  { key: 'email', label: 'Email' },
+  { key: 'created_at', label: 'Date', render: (val) => new Date(val).toLocaleDateString() }
+] }) => {
+  // Extract the endpoint from the API path if it's a full path
+  const isFullApiPath = endpoint?.includes('/api/admin/');
+  const extractedEndpoint = isFullApiPath ? endpoint.split('/api/admin/')[1] : endpoint;
+  
+  // Determine if the provided endpoint is one of our known tabs
+  const isKnownTab = extractedEndpoint && ['contacts', 'careers', 'community', 'resources'].includes(extractedEndpoint);
+  
+  const [activeTab, setActiveTab] = useState(isKnownTab ? extractedEndpoint : 'contacts');
+  
+  // For UI purposes (status options, etc.), use the extracted endpoint
+  const uiEndpoint = extractedEndpoint || 'contacts';
+  
+  // For API calls, we'll determine the path separately
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [loading, setLoading] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -47,7 +75,7 @@ const SubmissionsPage: React.FC = () => {
 
   useEffect(() => {
     fetchSubmissions();
-  }, [activeTab]);
+  }, [activeTab, uiEndpoint]);
 
   const showMessage = (type: 'success' | 'error', text: string) => {
     setMessage({ type, text });
@@ -58,8 +86,15 @@ const SubmissionsPage: React.FC = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('admin_token');
-      const currentTab = tabs.find(t => t.id === activeTab);
-      const response = await fetch(`${API_URL}/api/admin/${currentTab?.endpoint}`, {
+      
+      // Determine the endpoint to use
+      const apiEndpoint = uiEndpoint;
+      
+      // Check if the endpoint is already a full path
+      const isFullApiPath = endpoint?.includes('/api/admin/');
+      const apiUrl = isFullApiPath ? `${API_URL}${endpoint}` : `${API_URL}/api/admin/${apiEndpoint}`;
+      
+      const response = await fetch(apiUrl, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
@@ -75,8 +110,12 @@ const SubmissionsPage: React.FC = () => {
   const handleUpdate = async (id: string) => {
     try {
       const token = localStorage.getItem('admin_token');
-      const currentTab = tabs.find(t => t.id === activeTab);
-      const response = await fetch(`${API_URL}/api/admin/${currentTab?.endpoint}/${id}`, {
+      
+      // Check if the endpoint is already a full path
+      const isFullApiPath = endpoint?.includes('/api/admin/');
+      const apiUrl = isFullApiPath ? `${API_URL}${endpoint}/${id}` : `${API_URL}/api/admin/${uiEndpoint}/${id}`;
+      
+      const response = await fetch(apiUrl, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -104,8 +143,12 @@ const SubmissionsPage: React.FC = () => {
 
     try {
       const token = localStorage.getItem('admin_token');
-      const currentTab = tabs.find(t => t.id === activeTab);
-      const response = await fetch(`${API_URL}/api/admin/${currentTab?.endpoint}/${id}`, {
+      
+      // Check if the endpoint is already a full path
+      const isFullApiPath = endpoint?.includes('/api/admin/');
+      const apiUrl = isFullApiPath ? `${API_URL}${endpoint}/${id}` : `${API_URL}/api/admin/${uiEndpoint}/${id}`;
+      
+      const response = await fetch(apiUrl, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -124,8 +167,13 @@ const SubmissionsPage: React.FC = () => {
 
   const startEdit = (submission: Submission) => {
     setEditingId(submission.id);
+    // Determine which status options to use based on the current context
+    const currentStatusOptions = uiEndpoint && statusOptions[uiEndpoint as keyof typeof statusOptions] 
+      ? statusOptions[uiEndpoint as keyof typeof statusOptions]
+      : statusOptions[activeTab as keyof typeof statusOptions];
+    
     setEditData({
-      status: submission.status || statusOptions[activeTab as keyof typeof statusOptions][0],
+      status: submission.status || (currentStatusOptions && currentStatusOptions[0]) || 'pending',
       admin_notes: submission.admin_notes || submission.reviewer_notes || submission.response_notes || ''
     });
   };
@@ -140,9 +188,9 @@ const SubmissionsPage: React.FC = () => {
       <div className="mb-8">
         <h1 className="text-4xl font-bold text-white mb-3 flex items-center">
           <Mail className="mr-4 text-blue-400" size={40} />
-          Submissions Manager
+          {title}
         </h1>
-        <p className="text-gray-400 text-lg">Manage contact forms, job applications, community requests, and resource enquiries</p>
+        <p className="text-gray-400 text-lg">Manage {endpoint}s and submissions</p>
       </div>
 
       {/* Success/Error Message */}
@@ -154,29 +202,31 @@ const SubmissionsPage: React.FC = () => {
         </div>
       )}
 
-      {/* Tabs */}
-      <div className="flex gap-2 mb-6 overflow-x-auto">
-        {tabs.map((tab) => {
-          const Icon = tab.icon;
-          const count = activeTab === tab.id ? submissions.length : 0;
-          return (
-            <button
-              key={tab.id}
-              onClick={() => { setActiveTab(tab.id); setStatusFilter('all'); }}
-              className={`flex items-center gap-2 px-6 py-3 rounded-lg transition-all whitespace-nowrap ${activeTab === tab.id
-                  ? 'bg-blue-600 text-white shadow-lg'
-                  : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
-                }`}
-            >
-              <Icon size={20} />
-              <span className="font-medium">{tab.label}</span>
-              {activeTab === tab.id && count > 0 && (
-                <span className="bg-white/20 px-2 py-0.5 rounded-full text-xs">{count}</span>
-              )}
-            </button>
-          );
-        })}
-      </div>
+      {/* Tabs - only show if no specific endpoint was provided */}
+      {!uiEndpoint || ['contacts', 'careers', 'community', 'resources'].includes(uiEndpoint) ? (
+        <div className="flex gap-2 mb-6 overflow-x-auto">
+          {tabs.map((tab) => {
+            const Icon = tab.icon;
+            const count = activeTab === tab.id ? submissions.length : 0;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => { setActiveTab(tab.id); setStatusFilter('all'); }}
+                className={`flex items-center gap-2 px-6 py-3 rounded-lg transition-all whitespace-nowrap ${activeTab === tab.id
+                    ? 'bg-blue-600 text-white shadow-lg'
+                    : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                  }`}
+              >
+                <Icon size={20} />
+                <span className="font-medium">{tab.label}</span>
+                {activeTab === tab.id && count > 0 && (
+                  <span className="bg-white/20 px-2 py-0.5 rounded-full text-xs">{count}</span>
+                )}
+              </button>
+            );
+          })}
+        </div>
+      ) : null}
 
       {/* Status Filter */}
       <div className="bg-gray-800 rounded-lg p-4 mb-6 flex items-center gap-4">
@@ -188,7 +238,9 @@ const SubmissionsPage: React.FC = () => {
           className="bg-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="all">All Statuses</option>
-          {statusOptions[activeTab as keyof typeof statusOptions].map(status => (
+          {(uiEndpoint && statusOptions[uiEndpoint as keyof typeof statusOptions] 
+            ? statusOptions[uiEndpoint as keyof typeof statusOptions]
+            : statusOptions[activeTab as keyof typeof statusOptions]).map(status => (
             <option key={status} value={status}>
               {status.charAt(0).toUpperCase() + status.slice(1)}
             </option>
@@ -216,10 +268,12 @@ const SubmissionsPage: React.FC = () => {
             <table className="w-full">
               <thead className="bg-gray-900">
                 <tr>
-                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Name</th>
-                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Email</th>
-                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Status</th>
-                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Date</th>
+                  {columns.map((col, index) => (
+                    <th key={index} className="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                      {col.label}
+                    </th>
+                  ))}
+                  <th className="px-6 py-4 text-right text-xs font-medium text-gray-300 uppercase tracking-wider">Status</th>
                   <th className="px-6 py-4 text-right text-xs font-medium text-gray-300 uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
@@ -227,20 +281,18 @@ const SubmissionsPage: React.FC = () => {
                 {filteredSubmissions.map((submission) => (
                   <React.Fragment key={submission.id}>
                     <tr className="hover:bg-gray-750 transition-colors">
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-white">{submission.name}</div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-300">{submission.email}</div>
-                      </td>
+                      {columns.map((col, index) => (
+                        <td key={index} className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-sm text-gray-300">
+                            {col.render ? col.render(submission[col.key]) : submission[col.key]}
+                          </div>
+                        </td>
+                      ))}
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full text-white ${statusColors[submission.status || 'new']
                           }`}>
                           {submission.status || 'new'}
                         </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
-                        {new Date(submission.created_at).toLocaleDateString()}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <button
@@ -259,7 +311,7 @@ const SubmissionsPage: React.FC = () => {
                     </tr>
                     {editingId === submission.id && (
                       <tr className="bg-gray-900">
-                        <td colSpan={5} className="px-6 py-4">
+                        <td colSpan={columns.length + 3} className="px-6 py-4">
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                               <label className="block text-sm font-medium text-gray-300 mb-2">Status</label>
@@ -268,7 +320,9 @@ const SubmissionsPage: React.FC = () => {
                                 onChange={(e) => setEditData({ ...editData, status: e.target.value })}
                                 className="w-full bg-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                               >
-                                {statusOptions[activeTab as keyof typeof statusOptions].map(status => (
+                                {(uiEndpoint && statusOptions[uiEndpoint as keyof typeof statusOptions] 
+                                  ? statusOptions[uiEndpoint as keyof typeof statusOptions]
+                                  : statusOptions[activeTab as keyof typeof statusOptions]).map(status => (
                                   <option key={status} value={status}>
                                     {status.charAt(0).toUpperCase() + status.slice(1)}
                                   </option>

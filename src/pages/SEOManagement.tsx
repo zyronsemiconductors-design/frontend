@@ -52,7 +52,6 @@ const SEOManagement: React.FC = () => {
     const fetchMetadata = async () => {
         setLoading(true);
         try {
-            const token = localStorage.getItem('admin_token');
             const response = await fetch(`${API_URL}/api/cms/public/seo/${selectedPage}`);
             const data = await response.json();
             if (data.success && data.data) {

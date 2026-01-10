@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Settings, Save, Check, Shield, Mail, Globe, Bell, Database, Palette, Code } from 'lucide-react';
+import { Settings, Save, Check, Shield, Mail, Globe, Database, Code } from 'lucide-react';
 
 const API_URL = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000').replace(/\/$/, '');
 

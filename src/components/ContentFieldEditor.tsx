@@ -40,7 +40,7 @@ const ContentFieldEditor: React.FC<ContentFieldEditorProps> = ({ content, onChan
         setExpanded(prev => ({ ...prev, [key]: !prev[key] }));
     };
 
-    const renderField = (key: string, value: any, index?: number) => {
+    const renderField = (key: string, value: any) => {
         const fieldPath = path ? `${path}.${key}` : key;
         const isExpanded = expanded[fieldPath] !== false; // Default to true
 
@@ -166,7 +166,7 @@ const ContentFieldEditor: React.FC<ContentFieldEditorProps> = ({ content, onChan
     if (Array.isArray(content)) {
         return (
             <>
-                {content.map((item, idx) => renderField(idx.toString(), item, idx))}
+                {content.map((item, idx) => renderField(idx.toString(), item))}
             </>
         );
     }

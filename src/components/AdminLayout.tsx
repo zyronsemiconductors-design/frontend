@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Outlet } from 'react-router-dom';
 import {
-  LayoutDashboard, FileText, Share2, Tag, Users, Inbox, Settings, LogOut,
+  LayoutDashboard, FileText, Users, Inbox, Settings, LogOut,
   Menu, X, ChevronRight, Activity, Bell
 } from 'lucide-react';
 
@@ -10,7 +10,6 @@ const AdminLayout: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const menuItems = [
     { path: '/admin', label: 'Dashboard', icon: LayoutDashboard, exact: true },
