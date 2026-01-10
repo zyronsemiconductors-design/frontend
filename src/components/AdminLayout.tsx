@@ -10,6 +10,7 @@ const AdminLayout: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [expandedMenus, setExpandedMenus] = useState<string[]>(['/admin/cms']);
 
   const menuItems = [
     { path: '/admin', label: 'Dashboard', icon: LayoutDashboard, exact: true },
@@ -40,10 +41,18 @@ const AdminLayout: React.FC = () => {
     return location.pathname.startsWith(path);
   };
 
+  const toggleMenu = (path: string) => {
+    setExpandedMenus(prev =>
+      prev.includes(path)
+        ? prev.filter(p => p !== path)
+        : [...prev, path]
+    );
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
       {/* Top Header */}
-      <header className="bg-gray-800/50 backdrop-blur-md border-b border-gray-700/50 sticky top-0 z-40">
+      <header className="fixed top-0 left-0 right-0 bg-gray-800/50 backdrop-blur-md border-b border-gray-700/50 z-50">
         <div className="flex items-center justify-between px-6 py-4">
           <div className="flex items-center gap-4">
             <button
@@ -84,10 +93,10 @@ const AdminLayout: React.FC = () => {
         </div>
       </header>
 
-      <div className="flex">
+      <div className="flex pt-[73px]">
         {/* Sidebar */}
         <aside className={`
-                    fixed lg:sticky top-0 left-0 z-30 h-screen
+                    fixed top-[73px] left-0 z-30 h-[calc(100vh-73px)]
                     bg-gray-800/50 backdrop-blur-md border-r border-gray-700/50
                     transition-all duration-300 ease-in-out
                     ${sidebarOpen ? 'translate-x-0 w-64' : '-translate-x-full lg:translate-x-0 lg:w-20'}
@@ -99,47 +108,75 @@ const AdminLayout: React.FC = () => {
                 const Icon = item.icon;
                 const active = isActive(item.path, item.exact);
                 const hasSubmenu = item.submenu && item.submenu.length > 0;
+                const isExpanded = expandedMenus.includes(item.path);
+
+                const menuItemContent = (
+                  <>
+                    <Icon size={20} />
+                    {sidebarOpen && (
+                      <>
+                        <span className="flex-1 font-medium">{item.label}</span>
+                        {item.badge && (
+                          <span className="px-2 py-0.5 text-xs bg-red-500 text-white rounded-full">
+                            {item.badge}
+                          </span>
+                        )}
+                        {hasSubmenu && (
+                          <ChevronRight
+                            size={16}
+                            className={`transition-transform duration-200 ${isExpanded ? 'rotate-90' : ''}`}
+                          />
+                        )}
+                      </>
+                    )}
+                  </>
+                );
 
                 return (
                   <div key={item.path}>
-                    <Link
-                      to={item.path}
-                      className={`
-                                                flex items-center gap-3 px-4 py-3 rounded-lg transition-all
-                                                ${active
-                          ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
-                          : 'text-gray-400 hover:bg-gray-700/50 hover:text-white'
-                        }
-                                                ${!sidebarOpen && 'lg:justify-center'}
-                                            `}
-                    >
-                      <Icon size={20} />
-                      {sidebarOpen && (
-                        <>
-                          <span className="flex-1 font-medium">{item.label}</span>
-                          {item.badge && (
-                            <span className="px-2 py-0.5 text-xs bg-red-500 text-white rounded-full">
-                              {item.badge}
-                            </span>
-                          )}
-                          {hasSubmenu && <ChevronRight size={16} />}
-                        </>
-                      )}
-                    </Link>
+                    {hasSubmenu ? (
+                      <button
+                        onClick={() => toggleMenu(item.path)}
+                        className={`
+                          w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all
+                          ${active
+                            ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
+                            : 'text-gray-400 hover:bg-gray-700/50 hover:text-white'
+                          }
+                          ${!sidebarOpen && 'lg:justify-center'}
+                        `}
+                      >
+                        {menuItemContent}
+                      </button>
+                    ) : (
+                      <Link
+                        to={item.path}
+                        className={`
+                          flex items-center gap-3 px-4 py-3 rounded-lg transition-all
+                          ${active
+                            ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
+                            : 'text-gray-400 hover:bg-gray-700/50 hover:text-white'
+                          }
+                          ${!sidebarOpen && 'lg:justify-center'}
+                        `}
+                      >
+                        {menuItemContent}
+                      </Link>
+                    )}
 
-                    {hasSubmenu && sidebarOpen && isActive(item.path) && (
+                    {hasSubmenu && sidebarOpen && isExpanded && (
                       <div className="ml-4 mt-1 space-y-1">
                         {item.submenu.map((subItem) => (
                           <Link
                             key={subItem.path}
                             to={subItem.path}
                             className={`
-                                                            flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-all
-                                                            ${location.pathname === subItem.path
+                              flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-all
+                              ${location.pathname === subItem.path
                                 ? 'bg-gray-700 text-white'
                                 : 'text-gray-400 hover:bg-gray-700/50 hover:text-white'
                               }
-                                                        `}
+                            `}
                           >
                             <div className="w-1.5 h-1.5 rounded-full bg-current"></div>
                             {subItem.label}
@@ -170,7 +207,7 @@ const AdminLayout: React.FC = () => {
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 p-6 lg:p-8">
+        <main className={`flex-1 p-6 lg:p-8 transition-all duration-300 ${sidebarOpen ? 'lg:ml-64' : 'lg:ml-20'}`}>
           <Outlet />
         </main>
       </div>

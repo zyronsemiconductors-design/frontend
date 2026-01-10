@@ -54,7 +54,6 @@ const DashboardOverview: React.FC = () => {
       color: 'from-blue-500 to-blue-600',
       bgColor: 'bg-blue-500/10',
       iconColor: 'text-blue-400',
-      trend: '+12%',
       trendUp: true
     },
     {
@@ -64,7 +63,6 @@ const DashboardOverview: React.FC = () => {
       color: 'from-purple-500 to-purple-600',
       bgColor: 'bg-purple-500/10',
       iconColor: 'text-purple-400',
-      trend: '+8%',
       trendUp: true
     },
     {
@@ -74,7 +72,6 @@ const DashboardOverview: React.FC = () => {
       color: 'from-green-500 to-green-600',
       bgColor: 'bg-green-500/10',
       iconColor: 'text-green-400',
-      trend: '+5%',
       trendUp: true
     },
     {
@@ -84,7 +81,6 @@ const DashboardOverview: React.FC = () => {
       color: 'from-orange-500 to-orange-600',
       bgColor: 'bg-orange-500/10',
       iconColor: 'text-orange-400',
-      trend: '-3%',
       trendUp: false
     }
   ];
@@ -145,7 +141,6 @@ const DashboardOverview: React.FC = () => {
                 </div>
                 <div className={`flex items-center gap-1 text-sm ${card.trendUp ? 'text-green-400' : 'text-red-400'}`}>
                   <TrendIcon size={16} />
-                  <span className="font-medium">{card.trend}</span>
                 </div>
               </div>
               <h3 className="text-gray-400 text-sm font-medium mb-1">{card.title}</h3>
