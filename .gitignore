@@ -9,6 +9,9 @@ coverage
 # Production
 build
 dist
+.pnpm-debug.log
+react-vite-ts@1.0.0
+tsc
 
 # Misc
 .DS_Store
