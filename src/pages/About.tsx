@@ -40,7 +40,7 @@ const AboutCompanySection: React.FC<AboutCompanySectionProps> = ({
 };
 
 const About: React.FC = () => {
-  const { content, loading } = usePageContent('about');
+  const { content } = usePageContent('about');
 
   const getContent = (sectionKey: string) => getSectionContent(content, sectionKey);
 

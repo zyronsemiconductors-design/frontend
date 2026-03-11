@@ -10,7 +10,7 @@ import { usePageContent, getSectionContent } from '../utils/useCMS';
 import { ICON_MAP } from '../cms/iconMap';
 
 const Home: React.FC = () => {
-  const { content, loading } = usePageContent('home');
+  const { content } = usePageContent('home');
 
   const getContent = (sectionKey: string) => getSectionContent(content, sectionKey);
 

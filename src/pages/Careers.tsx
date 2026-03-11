@@ -113,7 +113,7 @@ const Careers: React.FC = () => {
   const jobs = getSectionContent(content, 'jobs') || [];
   const cta = getSectionContent(content, 'cta') || {};
 
-  const departments = ["All", ...new Set(jobs.map((j: any) => j.dept))];
+  const departments = ["All", ...new Set(jobs.map((j: any) => String(j.dept || "")))] as string[];
 
   const filteredJobs = jobs.filter((job: any) => {
     const matchSearch = job.title
@@ -161,7 +161,7 @@ const Careers: React.FC = () => {
           </p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredJobs.map((job, idx) => (
+            {filteredJobs.map((job: Job, idx: number) => (
               <JobCard key={idx} job={job} onApply={(title) => setSelectedJob(title)} />
             ))}
           </div>
