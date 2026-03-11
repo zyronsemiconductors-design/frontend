@@ -5,7 +5,7 @@ const API_URL = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000').r
 
 interface Admin {
   id: string;
-  username: string;
+  full_name: string;
   email: string;
   role: 'super' | 'admin';
   created_at: string;
@@ -17,7 +17,7 @@ const UserManagement: React.FC = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [newAdmin, setNewAdmin] = useState({
-    username: '',
+    full_name: '',
     email: '',
     password: '',
     role: 'admin' as 'admin' | 'super'
@@ -64,7 +64,7 @@ const UserManagement: React.FC = () => {
       if (result.success || response.ok) {
         await fetchAdmins();
         setShowAddModal(false);
-        setNewAdmin({ username: '', email: '', password: '', role: 'admin' });
+        setNewAdmin({ full_name: '', email: '', password: '', role: 'admin' });
         showMessage('success', 'User created successfully!');
       } else {
         showMessage('error', result.error || 'Failed to create user');
@@ -154,7 +154,7 @@ const UserManagement: React.FC = () => {
                     )}
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-white">{admin.username}</h3>
+                    <h3 className="text-xl font-bold text-white">{admin.full_name}</h3>
                     <div className="flex items-center gap-2 mt-1">
                       <span className={`px-3 py-1 text-xs font-semibold rounded-full ${admin.role === 'super'
                         ? 'bg-yellow-500/20 text-yellow-300 border border-yellow-500'
@@ -218,8 +218,8 @@ const UserManagement: React.FC = () => {
                   <User size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                   <input
                     type="text"
-                    value={newAdmin.username}
-                    onChange={(e) => setNewAdmin({ ...newAdmin, username: e.target.value })}
+                    value={newAdmin.full_name}
+                    onChange={(e) => setNewAdmin({ ...newAdmin, full_name: e.target.value })}
                     className="w-full bg-gray-700 text-white rounded-lg pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="johndoe"
                     required
