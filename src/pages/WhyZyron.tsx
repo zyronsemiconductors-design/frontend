@@ -3,14 +3,12 @@ import Navbar from "../components/Navbar";
 import ServicesExactUI from "../components/ServicesExactUI";
 import PageHeader from "../components/PageHeader";
 import Section from "../components/ui/Section";
-import Eng from "../content/Eng";
 import { usePageContent, getSectionContent } from "../utils/useCMS";
 
 const WhyZyron: React.FC = () => {
-  const { content, loading } = usePageContent('why-zyron');
-
-  // Get advantages from CMS or fallback
-  const advantagesContent = loading ? Eng.whyFeatures : getSectionContent(content, 'advantages') || Eng.whyFeatures;
+  const { content } = usePageContent('why-zyron');
+  const header = getSectionContent(content, 'header') || { title: '', highlight: '', subtitle: '', bgImage: '', height: '70vh' };
+  const advantagesContent = getSectionContent(content, 'advantages') || [];
 
   return (
     <>
@@ -19,11 +17,11 @@ const WhyZyron: React.FC = () => {
 
         <div className="flex-1 min-h-0 justify-center flex items-center">
           <PageHeader
-            title="Why Partner with"
-            highlight="Zyron?"
-            subtitle="We combine deep domain expertise with cutting-edge tools to deliver exceptional semiconductor solutions."
-            bgImage="https://plus.unsplash.com/premium_photo-1682144748274-add3d8ed04ea?q=80&w=2034&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-            height="70vh"
+            title={header.title}
+            highlight={header.highlight}
+            subtitle={header.subtitle}
+            bgImage={header.bgImage}
+            height={header.height || "70vh"}
           />
         </div>
       </div>

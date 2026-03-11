@@ -9,7 +9,7 @@ import Services from './pages/Services';
 import WhyZyron from './pages/WhyZyron';
 import Contact from './pages/Contact';
 import Careers from './pages/Careers';
-import Eng from './content/Eng';
+import { usePageSection } from './utils/useCMS';
 import Community from './pages/Community';
 import Resources from './pages/Resources';
 import ScrollToTop from './components/ScrollToTop';
@@ -37,6 +37,8 @@ import NavigationManagement from './pages/NavigationManagement';
 const AnimatedRoutes = () => {
   const location = useLocation();
   const isAdminPath = location.pathname.startsWith('/admin') || location.pathname === '/setup';
+  const { section: footerSection } = usePageSection('global', 'footer');
+  const footerData = footerSection?.content;
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -100,7 +102,7 @@ const AnimatedRoutes = () => {
         </AnimatePresence>
         {!isAdminPath && <SocialIcons />}
       </main>
-      {!isAdminPath && <Footer data={Eng.Common.footer} />}
+      {!isAdminPath && footerData && <Footer data={footerData} />}
     </div>
   );
 };

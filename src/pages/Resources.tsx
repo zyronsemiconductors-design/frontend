@@ -1,11 +1,16 @@
 import React from "react";
-import Eng from "../content/Eng";
+import { usePageContent, getSectionContent } from "../utils/useCMS";
 import PageHeader from "../components/PageHeader";
 import { ResourceCategories, ResourcesCTA, ResourcesIntro, ResourcesList } from "../components/ResourcesDev";
 import Navbar from "../components/Navbar";
 
 const Resources: React.FC = () => {
-    const data = Eng.resources;
+    const { content } = usePageContent('resources');
+    const header = getSectionContent(content, 'header') || { title: '', highlight: '', subtitle: '', bgImage: '' };
+    const intro = getSectionContent(content, 'intro') || { title: '', description: '' };
+    const categories = getSectionContent(content, 'categories') || [];
+    const items = getSectionContent(content, 'items') || [];
+    const cta = getSectionContent(content, 'cta') || { title: '', subtitle: '', button: '' };
 
     return (
         <>
@@ -14,10 +19,10 @@ const Resources: React.FC = () => {
 
                 <div className="flex-1 min-h-0 justify-center flex items-center">
                     <PageHeader
-                        title={data.header.title}
-                        highlight={data.header.highlight}
-                        subtitle={data.header.subtitle}
-                        bgImage={data.header.bgImage}
+                        title={header.title}
+                        highlight={header.highlight}
+                        subtitle={header.subtitle}
+                        bgImage={header.bgImage}
                     />
 
                 </div>
@@ -25,15 +30,15 @@ const Resources: React.FC = () => {
 
 
             <ResourcesIntro
-                title={data.intro.title}
-                description={data.intro.description}
+                title={intro.title}
+                description={intro.description}
             />
 
-            <ResourceCategories items={data.categories} />
+            <ResourceCategories items={categories} />
 
-            <ResourcesList items={data.items} />
+            <ResourcesList items={items} />
 
-            <ResourcesCTA data={data.cta} />
+            <ResourcesCTA data={cta} />
         </>
     );
 };

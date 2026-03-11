@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar";
 import Section from "../components/ui/Section";
 
 import PageHeader from "../components/PageHeader";
-import Eng from "../content/Eng";
+import { usePageContent, getSectionContent } from "../utils/useCMS";
 import { CultureSection } from "../components/CultureSection";
 import { CareersIntro } from "../components/CareersIntro";
 import { CareersCTA } from "../components/CareersCTA";
@@ -106,9 +106,16 @@ const Careers: React.FC = () => {
   const [filter, setFilter] = useState("All");
   const [selectedJob, setSelectedJob] = useState<string | null>(null);
 
-  const departments = ["All", ...new Set(Eng.Careers.jobs.map((j) => j.dept))];
+  const { content } = usePageContent('careers');
+  const header = getSectionContent(content, 'header') || { title: '', highlight: '', subtitle: '', bgImage: '' };
+  const intro = getSectionContent(content, 'intro') || { title: '', description: '' };
+  const culture = getSectionContent(content, 'culture') || { title: '', highlight: '', description: '', image: '', points: [] };
+  const jobs = getSectionContent(content, 'jobs') || [];
+  const cta = getSectionContent(content, 'cta') || {};
 
-  const filteredJobs = Eng.Careers.jobs.filter((job) => {
+  const departments = ["All", ...new Set(jobs.map((j: any) => j.dept))];
+
+  const filteredJobs = jobs.filter((job: any) => {
     const matchSearch = job.title
       .toLowerCase()
       .includes(search.toLowerCase());
@@ -122,18 +129,18 @@ const Careers: React.FC = () => {
 
       <div className="flex-1 min-h-0 justify-center flex items-center">
         <PageHeader
-          title={Eng.headers.careers.title}
-          highlight={Eng.headers.careers.highlight}
-          subtitle={Eng.headers.careers.subtitle}
-          bgImage={Eng.headers.careers.bgImage}
+          title={header.title}
+          highlight={header.highlight}
+          subtitle={header.subtitle}
+          bgImage={header.bgImage}
         />
       </div>
     </div>
 
     <div className="bg-gray-50 min-h-screen">
-      <CareersIntro data={Eng.Careers.intro} />
+      <CareersIntro data={intro} />
       <Section className="relative z-10">
-        <CultureSection data={Eng.Careers.culture} />
+        <CultureSection data={culture} />
       </Section>
       {/* 🔍 Search & Filter */}
       <div className="max-w-7xl mx-auto py-0 mb-10 px-4 md:px6">
@@ -166,7 +173,7 @@ const Careers: React.FC = () => {
         onClose={() => setSelectedJob(null)}
       />
       <Section className="relative z-10">
-        <CareersCTA data={Eng.Careers.cta} />
+        <CareersCTA data={cta} />
       </Section>
     </div></>
   );

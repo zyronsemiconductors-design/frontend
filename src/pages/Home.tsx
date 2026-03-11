@@ -6,35 +6,28 @@ import { ServicesSection } from '../components/ServicesSection';
 import OurFeatures from '../components/OurFeatures';
 import AboutSection from '../components/AboutSection';
 import ContactSection from '../components/ContactSection';
-import Eng from '../content/Eng';
 import { usePageContent, getSectionContent } from '../utils/useCMS';
+import { ICON_MAP } from '../cms/iconMap';
 
 const Home: React.FC = () => {
   const { content, loading } = usePageContent('home');
 
-  // Helper to get CMS content or fallback to hardcoded content
-  const getContent = (sectionKey: string, fallback: any) => {
-    if (loading) return fallback;
-    const cmsContent = getSectionContent(content, sectionKey);
-    return cmsContent || fallback;
+  const getContent = (sectionKey: string) => getSectionContent(content, sectionKey);
+
+  const heroContent = getContent('hero') || [];
+  const servicesContent = getContent('services') || { title: '', subtitle: '', list: [] };
+
+  const cmsFeatures = getContent('features') || { title: '', subtitle: '', list: [] };
+  const featuresContent = {
+    ...cmsFeatures,
+    list: (cmsFeatures.list || []).map((feature: any) => ({
+      ...feature,
+      icon: ICON_MAP[feature.icon] || Object.values(ICON_MAP)[0]
+    }))
   };
 
-  // Get hero content from CMS or fallback
-  const heroContent = getContent('hero', Eng.headers.home);
-  const servicesContent = getContent('services', Eng.home.services);
-
-  // Get features from CMS and merge with icons from Eng data
-  const cmsFeatures = getContent('features', null);
-  const featuresContent = cmsFeatures ? {
-    ...cmsFeatures,
-    list: cmsFeatures.list?.map((feature: any, idx: number) => ({
-      ...feature,
-      icon: Eng.home.features.list[idx]?.icon || Eng.home.features.list[0]?.icon // Fallback to first icon if index doesn't match
-    })) || []
-  } : Eng.home.features;
-
-  const aboutContent = getContent('about', Eng.home.about);
-  const contactContent = getContent('contact_info', Eng.Common.contactInfo);
+  const aboutContent = getContent('about') || { title: '', subtitle: '', paragraphs: [], skills: [] };
+  const contactContent = getContent('contact_info') || { title: '', formTitle: '', address: {}, emails: {}, phone: {}, website: {} };
 
   return (
     <>

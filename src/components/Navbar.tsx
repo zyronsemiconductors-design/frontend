@@ -4,7 +4,7 @@ import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MobileDropdown } from "./MobileDropdown";
 import NavDropdown from "./NavDropdown";
-import Eng from "../content/Eng";
+import { usePageSection } from "../utils/useCMS";
 import logo from "../assets/zyronlogo.png";
 
 const Navbar: React.FC = () => {
@@ -13,6 +13,8 @@ const Navbar: React.FC = () => {
   const [openDropdown, setOpenDropdown] = useState<null | "services" | "why">(null);
   const [mobileOpen, setMobileOpen] = useState<null | "services" | "why">(null);
   const location = useLocation();
+  const { section: navSection } = usePageSection('global', 'nav');
+  const nav = navSection?.content || { main: [], services: [], why: [] };
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 30);
@@ -51,7 +53,7 @@ const Navbar: React.FC = () => {
 
         {/* Desktop Menu */}
         <div className="hidden lg:flex items-center gap-10">
-          {Eng.nav.main.slice(0, 1).map((item) => (
+          {nav.main.slice(0, 1).map((item: any) => (
             <Link key={item.to} to={item.to} className={linkClass(item.to)}>
               {item.label}
             </Link>
@@ -59,7 +61,7 @@ const Navbar: React.FC = () => {
 
           <NavDropdown
             title="Our Services"
-            items={Eng.nav.services}
+            items={nav.services}
             isOpen={openDropdown === "services"}
             onOpen={() => setOpenDropdown("services")}
             onClose={() => setOpenDropdown(null)}
@@ -67,13 +69,13 @@ const Navbar: React.FC = () => {
 
           <NavDropdown
             title="Why Zyron"
-            items={Eng.nav.why}
+            items={nav.why}
             isOpen={openDropdown === "why"}
             onOpen={() => setOpenDropdown("why")}
             onClose={() => setOpenDropdown(null)}
           />
 
-          {Eng.nav.main.slice(1).map((item) => (
+          {nav.main.slice(1).map((item: any) => (
             <Link key={item.to} to={item.to} className={linkClass(item.to)}>
               {item.label}
             </Link>
@@ -100,7 +102,7 @@ const Navbar: React.FC = () => {
             className="lg:hidden fixed inset-x-0 top-[80px] bg-white text-gray-900 shadow-xl border-t overflow-y-auto z-40"
           >
             <div className="px-6 py-6 border-t">
-              {Eng.nav.main.map((item) => (
+              {nav.main.map((item: any) => (
                 <Link
                   key={item.to}
                   to={item.to}
@@ -112,7 +114,7 @@ const Navbar: React.FC = () => {
 
               <MobileDropdown
                 title="Our Services"
-                items={Eng.nav.services}
+                items={nav.services}
                 open={mobileOpen === "services"}
                 onToggle={() =>
                   setMobileOpen(
@@ -123,7 +125,7 @@ const Navbar: React.FC = () => {
 
               <MobileDropdown
                 title="Why Zyron"
-                items={Eng.nav.why}
+                items={nav.why}
                 open={mobileOpen === "why"}
                 onToggle={() =>
                   setMobileOpen(mobileOpen === "why" ? null : "why")

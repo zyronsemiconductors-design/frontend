@@ -2,14 +2,16 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import ServicesExactUI from "../components/ServicesExactUI";
 import PageHeader from "../components/PageHeader";
-import Eng from "../content/Eng";
+import { usePageContent, getSectionContent } from "../utils/useCMS";
 
 
 
 /* ---------- Main Page ---------- */
 
 const Services: React.FC = () => {
-  // const [activeService, setActiveService] = useState(servicesData[0]);
+  const { content } = usePageContent('services');
+  const header = getSectionContent(content, 'header') || { title: '', highlight: '', subtitle: '', bgImage: '' };
+  const servicesList = getSectionContent(content, 'services_list') || [];
 
   return (<>
     <div className="min-h-screen w-full flex  overflow-hidden">
@@ -17,16 +19,16 @@ const Services: React.FC = () => {
 
       <div className="flex-1 min-h-0 justify-center flex items-center">
         <PageHeader
-          title={Eng.headers.services.title}
-          highlight={Eng.headers.services.highlight}
-          subtitle={Eng.headers.services.subtitle}
-          bgImage={Eng.headers.services.bgImage}
+          title={header.title}
+          highlight={header.highlight}
+          subtitle={header.subtitle}
+          bgImage={header.bgImage}
         />
 
       </div>
     </div>
     <div className=" bg-white">
-      <ServicesExactUI features1={Eng.services} />
+      <ServicesExactUI features1={servicesList} />
 
       {/* <div className="max-w-7xl mx-auto px-6 pb-24 grid grid-cols-1 lg:grid-cols-12 gap-8"> */}
       {/* <ServicesSidebar

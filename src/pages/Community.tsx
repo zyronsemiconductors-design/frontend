@@ -1,5 +1,5 @@
 import React from "react";
-import Eng from "../content/Eng";
+import { usePageContent, getSectionContent } from "../utils/useCMS";
 import PageHeader from "../components/PageHeader";
 import { CommunityActivities, CommunityIntro, CommunityJoinCTA, CommunityPillars } from "../components/CommunityDev";
 import Navbar from "../components/Navbar";
@@ -7,7 +7,12 @@ import Section from "../components/ui/Section";
 
 
 const Community: React.FC = () => {
-    const data = Eng.community;
+    const { content } = usePageContent('community');
+    const header = getSectionContent(content, 'header') || { title: '', highlight: '', subtitle: '', bgImage: '' };
+    const intro = getSectionContent(content, 'intro') || { title: '', description: '' };
+    const pillars = getSectionContent(content, 'pillars') || [];
+    const activities = getSectionContent(content, 'activities') || { title: '', description: '', activity: [] };
+    const join = getSectionContent(content, 'join') || { title: '', subtitle: '', button: '' };
 
     return (
         <>
@@ -16,10 +21,10 @@ const Community: React.FC = () => {
 
                 <div className="flex-1 min-h-0 justify-center flex items-center">
                     <PageHeader
-                        title={data.header.title}
-                        highlight={data.header.highlight}
-                        subtitle={data.header.subtitle}
-                        bgImage={data.header.bgImage}
+                        title={header.title}
+                        highlight={header.highlight}
+                        subtitle={header.subtitle}
+                        bgImage={header.bgImage}
                     />
 
                 </div>
@@ -29,21 +34,21 @@ const Community: React.FC = () => {
 
 
                 <CommunityIntro
-                    title={data.intro.title}
-                    description={data.intro.description}
+                    title={intro.title}
+                    description={intro.description}
                 />
             </Section>
             <Section className="bg-gradient-to-b from-transparent to-zyron-blue/5">
-                <CommunityPillars items={data.pillars} />
+                <CommunityPillars items={pillars} />
             </Section>
 
             <Section className="bg-gradient-to-b from-transparent to-zyron-blue/5">
 
-                <CommunityActivities items={data.activities} />
+                <CommunityActivities items={activities} />
             </Section>
 
             <Section className="bg-gradient-to-b from-transparent to-zyron-blue/5">
-                <CommunityJoinCTA data={data.join} />
+                <CommunityJoinCTA data={join} />
             </Section>
 
         </>

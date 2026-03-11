@@ -2,7 +2,6 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import CtaBanner from "../components/CtaBanner";
 import PageHeader from "../components/PageHeader";
-import Eng from "../content/Eng";
 import { usePageContent, getSectionContent } from "../utils/useCMS";
 
 interface AboutCompanySectionProps {
@@ -43,18 +42,10 @@ const AboutCompanySection: React.FC<AboutCompanySectionProps> = ({
 const About: React.FC = () => {
   const { content, loading } = usePageContent('about');
 
-  // Helper to get CMS content or fallback
-  const getContent = (sectionKey: string, fallback: any) => {
-    if (loading) return fallback;
-    const cmsContent = getSectionContent(content, sectionKey);
-    return cmsContent || fallback;
-  };
+  const getContent = (sectionKey: string) => getSectionContent(content, sectionKey);
 
-  // Get mission section from CMS
-  const missionContent = getContent('mission', {
-    title: "About Company",
-    description: "Zyron Semiconductors is an ASIC IP and Design services company founded by a group of committed and experienced semiconductor industry professionals with a goal to provide end-to-end design and engineering services. We are driven to use the power of our global network to connect businesses with the right people, and people with the right businesses without bias. It is a leading service provider in VLSI by exceeding expectations on delivery, meeting stringent schedules, demonstrating integrity and intelligence in all our engagements. We offer a spectrum of design and verification services, which includes defining specification, logic partitioning, micro-architecture, RTL coding, synthesis, developing custom and standard VIPs and verification environment development using latest methodologies (UVM/OVM)."
-  });
+  const header = getContent('header') || { title: '', highlight: '', subtitle: '', bgImage: '' };
+  const missionContent = getContent('mission') || { title: 'About Company', description: '' };
 
   return (<>
     <div className="min-h-screen w-full flex  overflow-hidden">
@@ -62,10 +53,10 @@ const About: React.FC = () => {
 
       <div className="flex-1 min-h-0 justify-center flex items-center">
         <PageHeader
-          title={Eng.headers.about.title}
-          highlight={Eng.headers.about.highlight}
-          subtitle={Eng.headers.about.subtitle}
-          bgImage={Eng.headers.about.bgImage}
+          title={header.title}
+          highlight={header.highlight}
+          subtitle={header.subtitle}
+          bgImage={header.bgImage}
         />
 
       </div>
