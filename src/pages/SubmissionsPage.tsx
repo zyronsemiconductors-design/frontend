@@ -87,6 +87,7 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ title = "Submissions 
       { key: 'email', label: 'Email' },
       { key: 'phone', label: 'Phone' },
       { key: 'position', label: 'Position' },
+      { key: 'message', label: 'Content' },
       { key: 'created_at', label: 'Date', render: (val) => new Date(val).toLocaleDateString() }
     ],
     community: [
