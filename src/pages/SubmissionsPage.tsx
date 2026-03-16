@@ -311,8 +311,8 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ title = "Submissions 
                       {col.label}
                     </th>
                   ))}
-                  <th className="px-6 py-4 text-right text-xs font-medium text-gray-300 uppercase tracking-wider">Status</th>
-                  <th className="px-6 py-4 text-right text-xs font-medium text-gray-300 uppercase tracking-wider">Actions</th>
+                  <th className="px-6 py-4 text-right text-xs font-medium text-gray-300 uppercase tracking-wider sticky right-24 bg-gray-900">Status</th>
+                  <th className="px-6 py-4 text-right text-xs font-medium text-gray-300 uppercase tracking-wider sticky right-0 bg-gray-900">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-700">
@@ -343,13 +343,13 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ title = "Submissions 
                       </div>
                     </td>
                   ))}
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      <td className="px-6 py-4 whitespace-nowrap sticky right-24 bg-gray-800">
                         <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full text-white ${statusColors[submission.status || 'new']
                           }`}>
                           {submission.status || 'new'}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium sticky right-0 bg-gray-800">
                         <button
                           onClick={() => startEdit(submission)}
                           className="text-blue-400 hover:text-blue-300 mr-3"
