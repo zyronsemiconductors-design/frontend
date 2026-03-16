@@ -321,8 +321,7 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ title = "Submissions 
                       </th>
                     );
                   })}
-                  <th className="px-4 py-4 text-right text-xs font-medium text-gray-300 uppercase tracking-wider w-[90px]">Status</th>
-                  <th className="px-4 py-4 text-right text-xs font-medium text-gray-300 uppercase tracking-wider w-[90px]">Actions</th>
+                  <th className="px-4 py-4 text-right text-xs font-medium text-gray-300 uppercase tracking-wider w-[130px]">Status</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-700">
@@ -352,24 +351,28 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ title = "Submissions 
                     </td>
                   ))}
                       <td className="px-4 py-4 whitespace-nowrap text-right">
-                        <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full text-white ${statusColors[submission.status || 'new']
-                          }`}>
-                          {submission.status || 'new'}
-                        </span>
-                      </td>
-                      <td className="px-4 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <button
-                          onClick={() => startEdit(submission)}
-                          className="text-blue-400 hover:text-blue-300 mr-3"
-                        >
-                          <Edit2 size={18} />
-                        </button>
-                        <button
-                          onClick={() => handleDelete(submission.id)}
-                          className="text-red-400 hover:text-red-300"
-                        >
-                          <Trash2 size={18} />
-                        </button>
+                        <div className="flex items-center justify-end gap-2">
+                          <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full text-white ${statusColors[submission.status || 'new']
+                            }`}>
+                            {submission.status || 'new'}
+                          </span>
+                          <button
+                            onClick={() => startEdit(submission)}
+                            className="text-blue-400 hover:text-blue-300"
+                            aria-label="Edit"
+                            title="Edit"
+                          >
+                            <Edit2 size={18} />
+                          </button>
+                          <button
+                            onClick={() => handleDelete(submission.id)}
+                            className="text-red-400 hover:text-red-300"
+                            aria-label="Delete"
+                            title="Delete"
+                          >
+                            <Trash2 size={18} />
+                          </button>
+                        </div>
                       </td>
                     </tr>
                     {editingId === submission.id && (
