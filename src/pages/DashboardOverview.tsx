@@ -175,7 +175,7 @@ const DashboardOverview: React.FC = () => {
             </button>
           </div>
           <div className="space-y-3">
-            {logs.slice(0, 8).map((log) => (
+            {logs.slice(0, 4).map((log) => (
               <div key={log.id} className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-750 transition-colors">
                 <div className="mt-1">{getTypeIcon(log.type)}</div>
                 <div className="flex-1 min-w-0">

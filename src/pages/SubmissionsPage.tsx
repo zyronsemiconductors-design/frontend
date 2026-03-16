@@ -305,10 +305,10 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ title = "Submissions 
                 <tr>
                   {columnsToUse.map((col, index) => {
                     const widthClass =
-                      col.key === 'name' ? 'w-[140px]' :
-                      col.key === 'email' ? 'w-[220px]' :
+                      col.key === 'name' ? 'w-[160px]' :
+                      col.key === 'email' ? 'w-[240px]' :
                       col.key === 'phone' ? 'w-[120px]' :
-                      col.key === 'position' ? 'w-[160px]' :
+                      col.key === 'position' ? 'w-[180px]' :
                       col.key === 'message' ? 'w-[90px] text-center' :
                       (col.key === 'date' || col.key === 'created_at') ? 'w-[110px]' :
                       'w-[140px]';
@@ -344,7 +344,9 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ title = "Submissions 
                             View
                           </button>
                         ) : (
-                          col.render ? col.render(submission[col.key]) : submission[col.key]
+                          <span className="block truncate">
+                            {col.render ? col.render(submission[col.key]) : submission[col.key]}
+                          </span>
                         )}
                       </div>
                     </td>
