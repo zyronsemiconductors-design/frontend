@@ -36,6 +36,7 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ title = "Submissions 
   
   // For UI purposes (status options, etc.), use the extracted endpoint
   const uiEndpoint = extractedEndpoint || 'contacts';
+  const effectiveEndpoint = isFullApiPath ? uiEndpoint : activeTab;
   
   // For API calls, we'll determine the path separately
   const [submissions, setSubmissions] = useState<Submission[]>([]);
@@ -44,6 +45,7 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ title = "Submissions 
   const [editData, setEditData] = useState<any>({});
   const [statusFilter, setStatusFilter] = useState('all');
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [contentModal, setContentModal] = useState<{ title: string; body: string } | null>(null);
 
   const tabs = [
     { id: 'contacts', label: 'Contact Forms', icon: Mail, endpoint: 'contacts' },
@@ -104,7 +106,7 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ title = "Submissions 
     ]
   };
 
-  const columnsToUse = columns || columnsByTab[uiEndpoint] || columnsByTab[activeTab] || [
+  const columnsToUse = columns || columnsByTab[effectiveEndpoint] || columnsByTab[activeTab] || [
     { key: 'name', label: 'Name' },
     { key: 'email', label: 'Email' },
     { key: 'created_at', label: 'Date', render: (val) => new Date(val).toLocaleDateString() }
@@ -121,7 +123,7 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ title = "Submissions 
       const token = localStorage.getItem('admin_token');
       
       // Determine the endpoint to use
-      const apiEndpoint = uiEndpoint;
+      const apiEndpoint = effectiveEndpoint;
       
       // Check if the endpoint is already a full path
       const isFullApiPath = endpoint?.includes('/api/admin/');
@@ -146,7 +148,7 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ title = "Submissions 
       
       // Check if the endpoint is already a full path
       const isFullApiPath = endpoint?.includes('/api/admin/');
-      const apiUrl = isFullApiPath ? `${API_URL}${endpoint}/${id}` : `${API_URL}/api/admin/${uiEndpoint}/${id}`;
+      const apiUrl = isFullApiPath ? `${API_URL}${endpoint}/${id}` : `${API_URL}/api/admin/${effectiveEndpoint}/${id}`;
       
       const response = await fetch(apiUrl, {
         method: 'PUT',
@@ -179,7 +181,7 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ title = "Submissions 
       
       // Check if the endpoint is already a full path
       const isFullApiPath = endpoint?.includes('/api/admin/');
-      const apiUrl = isFullApiPath ? `${API_URL}${endpoint}/${id}` : `${API_URL}/api/admin/${uiEndpoint}/${id}`;
+      const apiUrl = isFullApiPath ? `${API_URL}${endpoint}/${id}` : `${API_URL}/api/admin/${effectiveEndpoint}/${id}`;
       
       const response = await fetch(apiUrl, {
         method: 'DELETE',
@@ -201,8 +203,8 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ title = "Submissions 
   const startEdit = (submission: Submission) => {
     setEditingId(submission.id);
     // Determine which status options to use based on the current context
-    const currentStatusOptions = uiEndpoint && statusOptions[uiEndpoint as keyof typeof statusOptions] 
-      ? statusOptions[uiEndpoint as keyof typeof statusOptions]
+    const currentStatusOptions = statusOptions[effectiveEndpoint as keyof typeof statusOptions] 
+      ? statusOptions[effectiveEndpoint as keyof typeof statusOptions]
       : statusOptions[activeTab as keyof typeof statusOptions];
     
     setEditData({
@@ -214,6 +216,9 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ title = "Submissions 
   const filteredSubmissions = statusFilter === 'all'
     ? submissions
     : submissions.filter(s => s.status === statusFilter);
+
+  const truncate = (text: string, limit = 80) =>
+    text.length > limit ? `${text.slice(0, limit)}...` : text;
 
   return (
     <div className="max-w-7xl mx-auto">
@@ -271,8 +276,8 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ title = "Submissions 
           className="bg-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="all">All Statuses</option>
-          {(uiEndpoint && statusOptions[uiEndpoint as keyof typeof statusOptions] 
-            ? statusOptions[uiEndpoint as keyof typeof statusOptions]
+          {(statusOptions[effectiveEndpoint as keyof typeof statusOptions] 
+            ? statusOptions[effectiveEndpoint as keyof typeof statusOptions]
             : statusOptions[activeTab as keyof typeof statusOptions]).map(status => (
             <option key={status} value={status}>
               {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -317,7 +322,24 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ title = "Submissions 
                   {columnsToUse.map((col, index) => (
                     <td key={index} className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm text-gray-300">
-                        {col.render ? col.render(submission[col.key]) : submission[col.key]}
+                        {col.key === 'message' && typeof submission[col.key] === 'string' ? (
+                          <div className="flex items-center gap-2">
+                            <span className="truncate max-w-[240px] inline-block align-middle">
+                              {truncate(submission[col.key])}
+                            </span>
+                            {submission[col.key].length > 80 && (
+                              <button
+                                type="button"
+                                onClick={() => setContentModal({ title: 'Message', body: submission[col.key] })}
+                                className="text-blue-400 hover:text-blue-300 text-xs"
+                              >
+                                View
+                              </button>
+                            )}
+                          </div>
+                        ) : (
+                          col.render ? col.render(submission[col.key]) : submission[col.key]
+                        )}
                       </div>
                     </td>
                   ))}
@@ -353,8 +375,8 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ title = "Submissions 
                                 onChange={(e) => setEditData({ ...editData, status: e.target.value })}
                                 className="w-full bg-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                               >
-                                {(uiEndpoint && statusOptions[uiEndpoint as keyof typeof statusOptions] 
-                                  ? statusOptions[uiEndpoint as keyof typeof statusOptions]
+                                {(statusOptions[effectiveEndpoint as keyof typeof statusOptions] 
+                                  ? statusOptions[effectiveEndpoint as keyof typeof statusOptions]
                                   : statusOptions[activeTab as keyof typeof statusOptions]).map(status => (
                                   <option key={status} value={status}>
                                     {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -396,6 +418,36 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ title = "Submissions 
                 ))}
               </tbody>
             </table>
+          </div>
+        </div>
+      )}
+
+      {contentModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+          <div className="w-full max-w-2xl bg-gray-900 border border-gray-700 rounded-xl shadow-xl">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-700">
+              <h3 className="text-white font-semibold">{contentModal.title}</h3>
+              <button
+                type="button"
+                onClick={() => setContentModal(null)}
+                className="text-gray-400 hover:text-white"
+                aria-label="Close"
+              >
+                X
+              </button>
+            </div>
+            <div className="px-6 py-5 text-gray-200 whitespace-pre-wrap">
+              {contentModal.body}
+            </div>
+            <div className="px-6 py-4 border-t border-gray-700 flex justify-end">
+              <button
+                type="button"
+                onClick={() => setContentModal(null)}
+                className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}
