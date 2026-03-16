@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   TrendingUp, TrendingDown, Mail, Briefcase, Users, BookOpen,
   Activity, Clock, CheckCircle, AlertCircle, BarChart3, LineChart,
@@ -22,6 +23,7 @@ interface Log {
 }
 
 const DashboardOverview: React.FC = () => {
+  const navigate = useNavigate();
   const [stats, setStats] = useState<Stats>({ contacts: 0, careers: 0, community: 0, resources: 0 });
   const [logs, setLogs] = useState<Log[]>([]);
   const [loading, setLoading] = useState(true);
@@ -54,7 +56,8 @@ const DashboardOverview: React.FC = () => {
       color: 'from-blue-500 to-blue-600',
       bgColor: 'bg-blue-500/10',
       iconColor: 'text-blue-400',
-      trendUp: true
+      trendUp: true,
+      route: '/admin/contacts'
     },
     {
       title: 'Job Applications',
@@ -63,7 +66,8 @@ const DashboardOverview: React.FC = () => {
       color: 'from-purple-500 to-purple-600',
       bgColor: 'bg-purple-500/10',
       iconColor: 'text-purple-400',
-      trendUp: true
+      trendUp: true,
+      route: '/admin/careers'
     },
     {
       title: 'Community Requests',
@@ -72,7 +76,8 @@ const DashboardOverview: React.FC = () => {
       color: 'from-green-500 to-green-600',
       bgColor: 'bg-green-500/10',
       iconColor: 'text-green-400',
-      trendUp: true
+      trendUp: true,
+      route: '/admin/community'
     },
     {
       title: 'Resource Enquiries',
@@ -81,7 +86,8 @@ const DashboardOverview: React.FC = () => {
       color: 'from-orange-500 to-orange-600',
       bgColor: 'bg-orange-500/10',
       iconColor: 'text-orange-400',
-      trendUp: false
+      trendUp: false,
+      route: '/admin/resources'
     }
   ];
 
@@ -133,6 +139,7 @@ const DashboardOverview: React.FC = () => {
           return (
             <div
               key={index}
+              onClick={() => navigate(card.route)}
               className="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-gray-600 transition-all hover:scale-105 cursor-pointer group"
             >
               <div className="flex items-center justify-between mb-4">
@@ -159,7 +166,10 @@ const DashboardOverview: React.FC = () => {
               <Activity className="text-blue-400" size={24} />
               Recent Activity
             </h2>
-            <button className="text-sm text-blue-400 hover:text-blue-300 flex items-center gap-1">
+            <button
+              className="text-sm text-blue-400 hover:text-blue-300 flex items-center gap-1"
+              onClick={() => navigate('/admin/submissions')}
+            >
               <Eye size={16} />
               View All
             </button>
@@ -220,15 +230,24 @@ const DashboardOverview: React.FC = () => {
               Quick Actions
             </h3>
             <div className="space-y-2">
-              <button className="w-full text-left px-4 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors text-sm text-white flex items-center gap-3">
+              <button
+                className="w-full text-left px-4 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors text-sm text-white flex items-center gap-3"
+                onClick={() => navigate('/admin/submissions')}
+              >
                 <CheckCircle size={16} className="text-green-400" />
                 Review New Submissions
               </button>
-              <button className="w-full text-left px-4 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors text-sm text-white flex items-center gap-3">
+              <button
+                className="w-full text-left px-4 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors text-sm text-white flex items-center gap-3"
+                onClick={() => navigate('/admin/cms/pages')}
+              >
                 <Calendar size={16} className="text-blue-400" />
                 Manage Content
               </button>
-              <button className="w-full text-left px-4 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors text-sm text-white flex items-center gap-3">
+              <button
+                className="w-full text-left px-4 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors text-sm text-white flex items-center gap-3"
+                onClick={() => navigate('/admin/submissions')}
+              >
                 <AlertCircle size={16} className="text-orange-400" />
                 View Analytics
               </button>
