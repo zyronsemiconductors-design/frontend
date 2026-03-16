@@ -301,17 +301,26 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ title = "Submissions 
         </div>
       ) : (
         <div className="bg-gray-800 rounded-lg overflow-hidden border border-gray-700">
-          <div className="overflow-x-auto">
-            <table className="w-full">
+          <div className="overflow-x-hidden">
+            <table className="w-full table-fixed">
               <thead className="bg-gray-900">
                 <tr>
                   {columnsToUse.map((col, index) => (
-                    <th key={index} className="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                    <th
+                      key={index}
+                      className={`px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider ${
+                        col.key === 'name' ? 'w-[160px]' :
+                        col.key === 'email' ? 'w-[260px]' :
+                        col.key === 'content' || col.key === 'message' ? 'w-auto' :
+                        col.key === 'date' || col.key === 'created_at' ? 'w-[120px]' :
+                        'w-[140px]'
+                      }`}
+                    >
                       {col.label}
                     </th>
                   ))}
-                  <th className="px-6 py-4 text-right text-xs font-medium text-gray-300 uppercase tracking-wider sticky right-24 bg-gray-900 z-10 min-w-[110px]">Status</th>
-                  <th className="px-6 py-4 text-right text-xs font-medium text-gray-300 uppercase tracking-wider sticky right-0 bg-gray-900 z-10 min-w-[110px]">Actions</th>
+                  <th className="px-6 py-4 text-right text-xs font-medium text-gray-300 uppercase tracking-wider w-[120px]">Status</th>
+                  <th className="px-6 py-4 text-right text-xs font-medium text-gray-300 uppercase tracking-wider w-[120px]">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-700">
@@ -323,8 +332,8 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ title = "Submissions 
                       <div className="text-sm text-gray-300">
                         {col.key === 'message' && typeof submission[col.key] === 'string' ? (
                           <div className="flex items-center gap-2">
-                            <span className="truncate max-w-[240px] inline-block align-middle">
-                              {truncate(submission[col.key])}
+                            <span className="inline-block align-middle whitespace-normal break-words line-clamp-2 max-w-full">
+                              {truncate(submission[col.key], 120)}
                             </span>
                             {submission[col.key].length > 80 && (
                               <button
@@ -342,13 +351,13 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ title = "Submissions 
                       </div>
                     </td>
                   ))}
-                      <td className="px-6 py-4 whitespace-nowrap sticky right-24 bg-gray-800 z-10 min-w-[110px]">
+                      <td className="px-6 py-4 whitespace-nowrap text-right">
                         <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full text-white ${statusColors[submission.status || 'new']
                           }`}>
                           {submission.status || 'new'}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium sticky right-0 bg-gray-800 z-10 min-w-[110px]">
+                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <button
                           onClick={() => startEdit(submission)}
                           className="text-blue-400 hover:text-blue-300 mr-3"
