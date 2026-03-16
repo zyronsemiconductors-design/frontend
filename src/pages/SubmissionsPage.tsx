@@ -331,20 +331,13 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ title = "Submissions 
                     <td key={index} className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm text-gray-300">
                         {col.key === 'message' && typeof submission[col.key] === 'string' ? (
-                          <div className="flex items-center gap-2">
-                            <span className="inline-block align-middle whitespace-normal break-words line-clamp-2 max-w-full">
-                              {truncate(submission[col.key], 120)}
-                            </span>
-                            {submission[col.key].length > 80 && (
-                              <button
-                                type="button"
-                                onClick={() => setContentModal({ title: 'Message', body: submission[col.key] })}
-                                className="text-blue-400 hover:text-blue-300 text-xs"
-                              >
-                                View
-                              </button>
-                            )}
-                          </div>
+                          <button
+                            type="button"
+                            onClick={() => setContentModal({ title: 'Message', body: submission[col.key] })}
+                            className="text-blue-400 hover:text-blue-300 text-xs"
+                          >
+                            View
+                          </button>
                         ) : (
                           col.render ? col.render(submission[col.key]) : submission[col.key]
                         )}
