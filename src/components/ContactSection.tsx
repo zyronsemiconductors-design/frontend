@@ -19,7 +19,6 @@ const ContactSection: React.FC<ContactSectionProps> = ({ data }) => {
     const [form, setForm] = useState({
         name: "",
         email: "",
-        phone: "",
         subject: "",
         message: "",
     });
@@ -45,13 +44,12 @@ const ContactSection: React.FC<ContactSectionProps> = ({ data }) => {
                         data: {
                             name: form.name,
                             email: form.email,
-                            phone: form.phone,
                             message: form.message,
                         },
                     });
 
                     setSuccess("Message sent successfully! We'll get back to you soon.");
-                    setForm({ name: "", email: "", phone: "", subject: "", message: "" });
+                    setForm({ name: "", email: "", subject: "", message: "" });
         } catch (err: any) {
             setError(err.message || "Failed to send message. Please try again later.");
         } finally {
@@ -166,24 +164,14 @@ const ContactSection: React.FC<ContactSectionProps> = ({ data }) => {
                                     className="w-full border-b border-gray-300 bg-transparent py-2 focus:outline-none focus:border-blue-600"
                                 />
                             </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <input
-                                    type="tel"
-                                    name="phone"
-                                    value={form.phone}
-                                    onChange={handleChange}
-                                    placeholder="Your Phone (optional)"
-                                    className="w-full border-b border-gray-300 bg-transparent py-2 focus:outline-none focus:border-blue-600"
-                                />
-                                <input
-                                    type="text"
-                                    name="subject"
-                                    value={form.subject}
-                                    onChange={handleChange}
-                                    placeholder="Subject"
-                                    className="w-full border-b border-gray-300 bg-transparent py-2 focus:outline-none focus:border-blue-600"
-                                />
-                            </div>
+                            <input
+                                type="text"
+                                name="subject"
+                                value={form.subject}
+                                onChange={handleChange}
+                                placeholder="Subject"
+                                className="w-full border-b border-gray-300 bg-transparent py-2 focus:outline-none focus:border-blue-600"
+                            />
 
                             <textarea
                                 rows={4}
