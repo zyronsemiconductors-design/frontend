@@ -303,20 +303,24 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ title = "Submissions 
             <table className="w-full table-fixed">
               <thead className="bg-gray-900">
                 <tr>
-                  {columnsToUse.map((col, index) => (
-                    <th
-                      key={index}
-                      className={`px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider ${
-                        col.key === 'name' ? 'w-[160px]' :
-                        col.key === 'email' ? 'w-[260px]' :
-                        col.key === 'content' || col.key === 'message' ? 'w-auto' :
-                        col.key === 'date' || col.key === 'created_at' ? 'w-[120px]' :
-                        'w-[140px]'
-                      }`}
-                    >
-                      {col.label}
-                    </th>
-                  ))}
+                  {columnsToUse.map((col, index) => {
+                    const widthClass =
+                      col.key === 'name' ? 'w-[140px]' :
+                      col.key === 'email' ? 'w-[220px]' :
+                      col.key === 'phone' ? 'w-[120px]' :
+                      col.key === 'position' ? 'w-[160px]' :
+                      col.key === 'message' ? 'w-[90px] text-center' :
+                      (col.key === 'date' || col.key === 'created_at') ? 'w-[110px]' :
+                      'w-[140px]';
+                    return (
+                      <th
+                        key={index}
+                        className={`px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider whitespace-nowrap ${widthClass}`}
+                      >
+                        {col.label}
+                      </th>
+                    );
+                  })}
                   <th className="px-6 py-4 text-right text-xs font-medium text-gray-300 uppercase tracking-wider w-[120px]">Status</th>
                   <th className="px-6 py-4 text-right text-xs font-medium text-gray-300 uppercase tracking-wider w-[120px]">Actions</th>
                 </tr>
@@ -326,7 +330,10 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ title = "Submissions 
                   <React.Fragment key={submission.id}>
                     <tr className="hover:bg-gray-750 transition-colors">
                   {columnsToUse.map((col, index) => (
-                    <td key={index} className="px-6 py-4 whitespace-nowrap">
+                    <td
+                      key={index}
+                      className={`px-6 py-4 whitespace-nowrap ${col.key === 'message' ? 'text-center' : ''}`}
+                    >
                       <div className="text-sm text-gray-300">
                         {col.key === 'message' && typeof submission[col.key] === 'string' ? (
                           <button
