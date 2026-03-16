@@ -217,9 +217,6 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ title = "Submissions 
     ? submissions
     : submissions.filter(s => s.status === statusFilter);
 
-  const truncate = (text: string, limit = 80) =>
-    text.length > limit ? `${text.slice(0, limit)}...` : text;
-
   return (
     <div className="max-w-7xl mx-auto">
       {/* Header */}
