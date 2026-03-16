@@ -15,15 +15,25 @@ const ServicesExactUI: React.FC<Props> = ({ features1 }) => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const [active, setActive] = useState<FeatureItem>(features1[0]);
+    const [active, setActive] = useState<FeatureItem | null>(null);
 
     // 🔹 Sync active item from hash (#design)
     useEffect(() => {
+        if (!features1 || features1.length === 0) {
+            setActive(null);
+            return;
+        }
+
         const hash = location.hash.replace("#", "");
         if (hash) {
             const found = features1.find((f) => f.id === hash);
-            if (found) setActive(found);
+            if (found) {
+                setActive(found);
+                return;
+            }
         }
+
+        setActive(features1[0]);
     }, [location.hash, features1]);
 
     const handleSelect = (item: FeatureItem) => {
@@ -45,7 +55,7 @@ const ServicesExactUI: React.FC<Props> = ({ features1 }) => {
                 {/* 🔹 Left Menu */}
                 <div className="md:col-span-4 space-y-4">
                     {features1.map((item) => {
-                        const isActive = active.id === item.id;
+                        const isActive = active?.id === item.id;
                         return (
                             <button
                                 key={item.id}
@@ -64,18 +74,24 @@ const ServicesExactUI: React.FC<Props> = ({ features1 }) => {
 
                 {/* 🔹 Right Content */}
                 <div className="md:col-span-8">
-                    <h2
-                        id={active.id}
-                        className="scroll-mt-24 text-xl md:text-5xl font-serif text-gray-900 mb-8"
-                    >
-                        {active.title}
-                    </h2>
+                    {active ? (
+                        <>
+                            <h2
+                                id={active.id}
+                                className="scroll-mt-24 text-xl md:text-5xl font-serif text-gray-900 mb-8"
+                            >
+                                {active.title}
+                            </h2>
 
-                    <div className="space-y-6 text-gray-600 text-lg leading-relaxed">
-                        {active.content.map((para, i) => (
-                            <p key={i}>{para}</p>
-                        ))}
-                    </div>
+                            <div className="space-y-6 text-gray-600 text-lg leading-relaxed">
+                                {active.content.map((para, i) => (
+                                    <p key={i}>{para}</p>
+                                ))}
+                            </div>
+                        </>
+                    ) : (
+                        <div className="text-gray-500">Loading services...</div>
+                    )}
                 </div>
             </div>
         </section>
