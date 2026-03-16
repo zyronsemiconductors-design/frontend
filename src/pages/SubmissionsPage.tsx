@@ -24,11 +24,7 @@ interface SubmissionsPageProps {
   columns?: ColumnConfig[];
 }
 
-const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ title = "Submissions Manager", endpoint = "contacts", columns = [
-  { key: 'name', label: 'Name' },
-  { key: 'email', label: 'Email' },
-  { key: 'created_at', label: 'Date', render: (val) => new Date(val).toLocaleDateString() }
-] }) => {
+const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ title = "Submissions Manager", endpoint = "contacts", columns }) => {
   // Extract the endpoint from the API path if it's a full path
   const isFullApiPath = endpoint?.includes('/api/admin/');
   const extractedEndpoint = isFullApiPath ? endpoint.split('/api/admin/')[1] : endpoint;
@@ -76,6 +72,43 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ title = "Submissions 
   useEffect(() => {
     fetchSubmissions();
   }, [activeTab, uiEndpoint]);
+
+  const columnsByTab: Record<string, ColumnConfig[]> = {
+    contacts: [
+      { key: 'name', label: 'Name' },
+      { key: 'email', label: 'Email' },
+      { key: 'phone', label: 'Phone' },
+      { key: 'message', label: 'Content' },
+      { key: 'created_at', label: 'Date', render: (val) => new Date(val).toLocaleDateString() }
+    ],
+    careers: [
+      { key: 'name', label: 'Candidate' },
+      { key: 'email', label: 'Email' },
+      { key: 'phone', label: 'Phone' },
+      { key: 'position', label: 'Position' },
+      { key: 'created_at', label: 'Date', render: (val) => new Date(val).toLocaleDateString() }
+    ],
+    community: [
+      { key: 'name', label: 'Member' },
+      { key: 'email', label: 'Email' },
+      { key: 'interest', label: 'Interest' },
+      { key: 'message', label: 'Content' },
+      { key: 'created_at', label: 'Date', render: (val) => new Date(val).toLocaleDateString() }
+    ],
+    resources: [
+      { key: 'name', label: 'Inquirer' },
+      { key: 'email', label: 'Email' },
+      { key: 'topic', label: 'Topic' },
+      { key: 'message', label: 'Content' },
+      { key: 'created_at', label: 'Date', render: (val) => new Date(val).toLocaleDateString() }
+    ]
+  };
+
+  const columnsToUse = columns || columnsByTab[uiEndpoint] || columnsByTab[activeTab] || [
+    { key: 'name', label: 'Name' },
+    { key: 'email', label: 'Email' },
+    { key: 'created_at', label: 'Date', render: (val) => new Date(val).toLocaleDateString() }
+  ];
 
   const showMessage = (type: 'success' | 'error', text: string) => {
     setMessage({ type, text });
@@ -268,7 +301,7 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ title = "Submissions 
             <table className="w-full">
               <thead className="bg-gray-900">
                 <tr>
-                  {columns.map((col, index) => (
+                  {columnsToUse.map((col, index) => (
                     <th key={index} className="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                       {col.label}
                     </th>
@@ -281,13 +314,13 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ title = "Submissions 
                 {filteredSubmissions.map((submission) => (
                   <React.Fragment key={submission.id}>
                     <tr className="hover:bg-gray-750 transition-colors">
-                      {columns.map((col, index) => (
-                        <td key={index} className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-300">
-                            {col.render ? col.render(submission[col.key]) : submission[col.key]}
-                          </div>
-                        </td>
-                      ))}
+                  {columnsToUse.map((col, index) => (
+                    <td key={index} className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-300">
+                        {col.render ? col.render(submission[col.key]) : submission[col.key]}
+                      </div>
+                    </td>
+                  ))}
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full text-white ${statusColors[submission.status || 'new']
                           }`}>
@@ -311,7 +344,7 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ title = "Submissions 
                     </tr>
                     {editingId === submission.id && (
                       <tr className="bg-gray-900">
-                        <td colSpan={columns.length + 3} className="px-6 py-4">
+                        <td colSpan={columnsToUse.length + 3} className="px-6 py-4">
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                               <label className="block text-sm font-medium text-gray-300 mb-2">Status</label>

@@ -68,6 +68,8 @@ const AnimatedRoutes = () => {
               <Route path="contacts" element={<SubmissionsPage title="Contact Inbox" endpoint="/api/admin/contacts" columns={[
                 { key: 'name', label: 'Name' },
                 { key: 'email', label: 'Email' },
+                { key: 'phone', label: 'Phone' },
+                { key: 'message', label: 'Content' },
                 { key: 'created_at', label: 'Date', render: (val) => new Date(val).toLocaleDateString() }
               ]} />} />
               <Route path="careers" element={<SubmissionsPage title="Job Applications Inbox" endpoint="/api/admin/careers" columns={[
