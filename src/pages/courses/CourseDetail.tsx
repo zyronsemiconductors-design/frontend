@@ -8,6 +8,7 @@ const CourseDetail: React.FC = () => {
   const { courseName } = useParams();
   const course = useMemo(() => (courseName ? getCourseBySlug(courseName) : null), [courseName]);
   const [modalOpen, setModalOpen] = useState(false);
+  const [showFullContent, setShowFullContent] = useState(false);
 
   if (!course) {
     return (
@@ -74,10 +75,20 @@ const CourseDetail: React.FC = () => {
               <div className="rounded-2xl border border-gray-200 p-6 bg-white shadow-sm">
                 <h2 className="text-xl font-semibold text-gray-900">Full Course Content</h2>
                 <ul className="mt-3 list-disc pl-6 space-y-2 text-gray-600">
-                  {course.fullContent.map((item, idx) => (
+                  {(showFullContent ? course.fullContent : course.fullContent.slice(0, 20)).map((item, idx) => (
                     <li key={idx}>{item}</li>
                   ))}
                 </ul>
+                {course.fullContent.length > 20 && (
+                  <div className="mt-4">
+                    <button
+                      onClick={() => setShowFullContent((prev) => !prev)}
+                      className="text-sm font-semibold text-zyron-cyan hover:underline"
+                    >
+                      {showFullContent ? "View Less" : "View More"}
+                    </button>
+                  </div>
+                )}
               </div>
             )}
 
