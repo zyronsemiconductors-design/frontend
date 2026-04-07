@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useLocation, useNavigate } from "react-router-dom";
 
 interface FeatureItem {
@@ -39,7 +40,6 @@ const ServicesExactUI: React.FC<Props> = ({ features1, courses }) => {
     const navigate = useNavigate();
 
     const [active, setActive] = useState<FeatureItem | null>(null);
-    const [openCategory, setOpenCategory] = useState<string | null>(null);
 
     // 🔹 Sync active item from hash (#design)
     useEffect(() => {
@@ -183,17 +183,10 @@ const ServicesExactUI: React.FC<Props> = ({ features1, courses }) => {
                                         <div className="space-y-10">
                                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                                                 {courses.categories.map((category) => (
-                                                    <button
+                                                    <Link
                                                         key={category.id}
-                                                        onClick={() => {
-                                                            setOpenCategory((prev) =>
-                                                                prev === category.id ? null : category.id
-                                                            );
-                                                        }}
-                                                        className={`rounded-2xl border px-5 py-4 text-left transition shadow-sm ${openCategory === category.id
-                                                            ? "border-zyron-cyan bg-zyron-cyan/5"
-                                                            : "border-gray-200 bg-white hover:shadow-md"
-                                                            }`}
+                                                        to={`/courses/${category.id}`}
+                                                        className="rounded-2xl border px-5 py-4 text-left transition shadow-sm border-gray-200 bg-white hover:shadow-md"
                                                     >
                                                         <div className="text-lg font-semibold text-gray-900">
                                                             {category.title}
@@ -203,54 +196,12 @@ const ServicesExactUI: React.FC<Props> = ({ features1, courses }) => {
                                                                 {category.description}
                                                             </div>
                                                         )}
-                                                    </button>
+                                                        <div className="mt-3 text-sm font-semibold text-zyron-cyan">
+                                                            View Courses
+                                                        </div>
+                                                    </Link>
                                                 ))}
                                             </div>
-
-                                            {courses.categories.map((category) => (
-                                                <div
-                                                    key={category.id}
-                                                    id={`category-${category.id}`}
-                                                    className={`space-y-6 ${openCategory === category.id ? "block" : "hidden"}`}
-                                                >
-                                                    <div className="space-y-2">
-                                                        <h4 className="text-xl font-semibold text-gray-900">{category.title}</h4>
-                                                        {category.description && (
-                                                            <p className="text-gray-600">{category.description}</p>
-                                                        )}
-                                                    </div>
-                                                    <div className="space-y-8">
-                                                        {category.courses.map((course) => (
-                                                            <div
-                                                                key={course.id}
-                                                                id={`course-${course.id}`}
-                                                                className="border border-gray-200 rounded-2xl p-6 shadow-sm bg-white scroll-mt-28"
-                                                            >
-                                                                <div className="flex flex-wrap items-baseline gap-3 mb-4">
-                                                                    <h5 className="text-xl font-semibold text-gray-900">{course.title}</h5>
-                                                                    {course.duration && (
-                                                                        <span className="text-sm font-medium text-zyron-cyan bg-zyron-cyan/10 px-3 py-1 rounded-full">
-                                                                            {course.duration}
-                                                                        </span>
-                                                                    )}
-                                                                </div>
-                                                                <div className="space-y-5">
-                                                                    {(course.sections || []).map((section, idx) => (
-                                                                        <div key={idx} className="space-y-2">
-                                                                            <h6 className="text-lg font-semibold text-gray-900">{section.title}</h6>
-                                                                            <ul className="list-disc pl-6 space-y-2 text-gray-600">
-                                                                                {(section.items || []).map((item, itemIdx) => (
-                                                                                    <li key={itemIdx}>{item}</li>
-                                                                                ))}
-                                                                            </ul>
-                                                                        </div>
-                                                                    ))}
-                                                                </div>
-                                                            </div>
-                                                        ))}
-                                                    </div>
-                                                </div>
-                                            ))}
                                         </div>
                                     ) : (
                                         courses?.list && courses.list.length > 0 && (
