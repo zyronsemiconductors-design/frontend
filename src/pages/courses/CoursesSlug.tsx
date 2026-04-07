@@ -118,7 +118,7 @@ const CoursesSlug: React.FC = () => {
                             className="w-full flex items-center justify-between px-4 py-3 text-left text-sm font-semibold text-gray-900"
                           >
                             <span>{section.title}</span>
-                            <span className="text-zyron-cyan">{isOpen ? "−" : "+"}</span>
+                            <span className="text-zyron-cyan">{isOpen ? "-" : "+"}</span>
                           </button>
                           {isOpen && (
                             <div className="px-4 pb-4">
@@ -182,7 +182,6 @@ const CoursesSlug: React.FC = () => {
           </div>
         </section>
 
-        <CoursesEnrollModal open={modalOpen} onClose={() => setModalOpen(false)} />
       </div>
     );
   }
