@@ -75,22 +75,36 @@ const CoursesSlug: React.FC = () => {
 
             {course.fullContent && course.fullContent.length > 0 && (
               <div className="rounded-2xl border border-gray-200 p-6 bg-white shadow-sm">
-                <h2 className="text-xl font-semibold text-gray-900">Full Course Content</h2>
-                <ul className="mt-3 list-disc pl-6 space-y-2 text-gray-600">
-                  {(showFullContent ? course.fullContent : course.fullContent.slice(0, 20)).map((item, idx) => (
-                    <li key={idx}>{item}</li>
-                  ))}
-                </ul>
-                {course.fullContent.length > 20 && (
-                  <div className="mt-4">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <h2 className="text-xl font-semibold text-gray-900">Full Course Content</h2>
+                    <p className="mt-1 text-sm text-gray-500">
+                      {course.fullContent.length} topics included
+                    </p>
+                  </div>
+                  {course.fullContent.length > 20 && (
                     <button
                       onClick={() => setShowFullContent((prev) => !prev)}
-                      className="text-sm font-semibold text-zyron-cyan hover:underline"
+                      className="rounded-full border border-zyron-cyan/40 px-4 py-1.5 text-sm font-semibold text-zyron-cyan hover:bg-zyron-cyan/10"
                     >
                       {showFullContent ? "View Less" : "View More"}
                     </button>
-                  </div>
-                )}
+                  )}
+                </div>
+                <div
+                  className={`mt-4 rounded-xl border border-gray-100 bg-slate-50 p-4 ${
+                    showFullContent ? "" : "max-h-96 overflow-hidden"
+                  }`}
+                >
+                  <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2 text-gray-700 text-sm leading-relaxed">
+                    {(showFullContent ? course.fullContent : course.fullContent.slice(0, 20)).map((item, idx) => (
+                      <li key={idx} className="flex gap-2">
+                        <span className="mt-1 h-2 w-2 flex-shrink-0 rounded-full bg-zyron-cyan/80" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             )}
 
