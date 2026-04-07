@@ -589,7 +589,7 @@ const PageContentManagement: React.FC = () => {
             if (sectionKey === 'hero') return renderHeroEditor();
             if (sectionKey === 'jobs') return renderJobsEditor();
             if (sectionKey === 'nav') return renderNavEditor();
-            if (sectionKey === 'courses') return renderCoursesEditor();
+            if (sectionKey === 'courses_v2') return renderCoursesEditor();
             return (
                 <div className="bg-gray-900 rounded-lg p-4 max-h-[600px] overflow-y-auto">
                     <ContentFieldEditor

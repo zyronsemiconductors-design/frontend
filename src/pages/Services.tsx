@@ -13,7 +13,7 @@ const Services: React.FC = () => {
   const { content } = usePageContent('services');
   const header = getSectionContent(content, 'header') || { title: '', highlight: '', subtitle: '', bgImage: '' };
   const servicesList = getSectionContent(content, 'services_list') || [];
-  const courses = getSectionContent(content, 'courses') || Eng.courses || null;
+  const courses = getSectionContent(content, 'courses_v2') || Eng.courses || null;
 
   return (<>
     <div className="min-h-screen w-full flex  overflow-hidden">

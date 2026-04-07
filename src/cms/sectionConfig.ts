@@ -74,7 +74,7 @@ export const CMS_PAGES = [
     sections: [
       { key: 'header', label: 'Page Header', description: 'Top banner for Services page', defaultContent: pageHeader(Eng.headers.services) },
       { key: 'services_list', label: 'Services List', description: 'Detailed services list', defaultContent: Eng.services },
-      { key: 'courses', label: 'Courses', description: 'Courses under Training & Upskilling', defaultContent: Eng.courses }
+      { key: 'courses_v2', label: 'Courses (New)', description: 'Courses under Training & Upskilling', defaultContent: Eng.courses }
     ]
   },
   {
