@@ -12,6 +12,7 @@ const Services: React.FC = () => {
   const { content } = usePageContent('services');
   const header = getSectionContent(content, 'header') || { title: '', highlight: '', subtitle: '', bgImage: '' };
   const servicesList = getSectionContent(content, 'services_list') || [];
+  const courses = getSectionContent(content, 'courses') || null;
 
   return (<>
     <div className="min-h-screen w-full flex  overflow-hidden">
@@ -28,7 +29,7 @@ const Services: React.FC = () => {
       </div>
     </div>
     <div className=" bg-white">
-      <ServicesExactUI features1={servicesList} />
+      <ServicesExactUI features1={servicesList} courses={courses} />
 
       {/* <div className="max-w-7xl mx-auto px-6 pb-24 grid grid-cols-1 lg:grid-cols-12 gap-8"> */}
       {/* <ServicesSidebar

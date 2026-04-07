@@ -7,11 +7,23 @@ interface FeatureItem {
     content: string[];
 }
 
-interface Props {
-    features1: FeatureItem[];
+interface CourseSection {
+    title?: string;
+    subtitle?: string;
+    list?: {
+        id: string;
+        title: string;
+        duration?: string;
+        sections?: { title: string; items: string[] }[];
+    }[];
 }
 
-const ServicesExactUI: React.FC<Props> = ({ features1 }) => {
+interface Props {
+    features1: FeatureItem[];
+    courses?: CourseSection | null;
+}
+
+const ServicesExactUI: React.FC<Props> = ({ features1, courses }) => {
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -122,6 +134,50 @@ const ServicesExactUI: React.FC<Props> = ({ features1 }) => {
                                     return blocks;
                                 })()}
                             </div>
+
+                            {active.id === "training" && courses?.list && courses.list.length > 0 && (
+                                <div id="courses" className="mt-10 space-y-8 scroll-mt-28">
+                                    <div className="space-y-2">
+                                        {courses.title && (
+                                            <h3 className="text-2xl font-semibold text-gray-900">{courses.title}</h3>
+                                        )}
+                                        {courses.subtitle && (
+                                            <p className="text-gray-600">{courses.subtitle}</p>
+                                        )}
+                                    </div>
+
+                                    <div className="space-y-8">
+                                        {courses.list.map((course) => (
+                                            <div
+                                                key={course.id}
+                                                id={`course-${course.id}`}
+                                                className="border border-gray-200 rounded-2xl p-6 shadow-sm bg-white scroll-mt-28"
+                                            >
+                                                <div className="flex flex-wrap items-baseline gap-3 mb-4">
+                                                    <h4 className="text-xl font-semibold text-gray-900">{course.title}</h4>
+                                                    {course.duration && (
+                                                        <span className="text-sm font-medium text-zyron-cyan bg-zyron-cyan/10 px-3 py-1 rounded-full">
+                                                            {course.duration}
+                                                        </span>
+                                                    )}
+                                                </div>
+                                                <div className="space-y-5">
+                                                    {(course.sections || []).map((section, idx) => (
+                                                        <div key={idx} className="space-y-2">
+                                                            <h5 className="text-lg font-semibold text-gray-900">{section.title}</h5>
+                                                            <ul className="list-disc pl-6 space-y-2 text-gray-600">
+                                                                {(section.items || []).map((item, itemIdx) => (
+                                                                    <li key={itemIdx}>{item}</li>
+                                                                ))}
+                                                            </ul>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
                         </>
                     ) : (
                         <div className="text-gray-500">Loading services...</div>
