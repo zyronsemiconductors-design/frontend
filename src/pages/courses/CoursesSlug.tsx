@@ -10,6 +10,24 @@ const CoursesSlug: React.FC = () => {
   const category = useMemo(() => (slug ? getCategoryById(slug) : null), [slug]);
   const [modalOpen, setModalOpen] = useState(false);
   const [showFullContent, setShowFullContent] = useState(false);
+  const [openWeek, setOpenWeek] = useState<string | null>(null);
+
+  const weekSections = useMemo(() => {
+    if (!course?.fullContent || course.fullContent.length === 0) return null;
+    const sections: { title: string; items: string[] }[] = [];
+    let current: { title: string; items: string[] } | null = null;
+    for (const line of course.fullContent) {
+      const title = line.trim();
+      if (/^Week\s*-?\s*\d+/i.test(title)) {
+        if (current) sections.push(current);
+        current = { title, items: [] };
+        continue;
+      }
+      if (current) current.items.push(line);
+    }
+    if (current) sections.push(current);
+    return sections.length > 0 ? sections : null;
+  }, [course?.fullContent]);
 
   if (!course && !category) {
     return (
@@ -82,7 +100,7 @@ const CoursesSlug: React.FC = () => {
                       {course.fullContent.length} topics included
                     </p>
                   </div>
-                  {course.fullContent.length > 20 && (
+                  {!weekSections && course.fullContent.length > 20 && (
                     <button
                       onClick={() => setShowFullContent((prev) => !prev)}
                       className="rounded-full border border-zyron-cyan/40 px-4 py-1.5 text-sm font-semibold text-zyron-cyan hover:bg-zyron-cyan/10"
@@ -91,20 +109,51 @@ const CoursesSlug: React.FC = () => {
                     </button>
                   )}
                 </div>
-                <div
-                  className={`mt-4 rounded-xl border border-gray-100 bg-slate-50 p-4 ${
-                    showFullContent ? "" : "max-h-96 overflow-hidden"
-                  }`}
-                >
-                  <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2 text-gray-700 text-sm leading-relaxed">
-                    {(showFullContent ? course.fullContent : course.fullContent.slice(0, 20)).map((item, idx) => (
-                      <li key={idx} className="flex gap-2">
-                        <span className="mt-1 h-2 w-2 flex-shrink-0 rounded-full bg-zyron-cyan/80" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                {weekSections ? (
+                  <div className="mt-4 space-y-3">
+                    {weekSections.map((section) => {
+                      const isOpen = openWeek === section.title;
+                      return (
+                        <div key={section.title} className="rounded-xl border border-gray-100 bg-slate-50">
+                          <button
+                            onClick={() => setOpenWeek(isOpen ? null : section.title)}
+                            className="w-full flex items-center justify-between px-4 py-3 text-left text-sm font-semibold text-gray-900"
+                          >
+                            <span>{section.title}</span>
+                            <span className="text-zyron-cyan">{isOpen ? "−" : "+"}</span>
+                          </button>
+                          {isOpen && (
+                            <div className="px-4 pb-4">
+                              <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2 text-gray-700 text-sm leading-relaxed">
+                                {section.items.map((item, idx) => (
+                                  <li key={idx} className="flex gap-2">
+                                    <span className="mt-1 h-2 w-2 flex-shrink-0 rounded-full bg-zyron-cyan/80" />
+                                    <span>{item}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <div
+                    className={`mt-4 rounded-xl border border-gray-100 bg-slate-50 p-4 ${
+                      showFullContent ? "" : "max-h-96 overflow-hidden"
+                    }`}
+                  >
+                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2 text-gray-700 text-sm leading-relaxed">
+                      {(showFullContent ? course.fullContent : course.fullContent.slice(0, 20)).map((item, idx) => (
+                        <li key={idx} className="flex gap-2">
+                          <span className="mt-1 h-2 w-2 flex-shrink-0 rounded-full bg-zyron-cyan/80" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             )}
 
