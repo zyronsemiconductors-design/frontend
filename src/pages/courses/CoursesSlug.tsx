@@ -1,14 +1,12 @@
 import React, { useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Navbar from "../../components/Navbar";
-import CoursesEnrollModal from "../../components/CoursesEnrollModal";
 import { getCategoryById, getCourseBySlug } from "../../content/coursesData";
 
 const CoursesSlug: React.FC = () => {
   const { slug } = useParams();
   const course = useMemo(() => (slug ? getCourseBySlug(slug) : null), [slug]);
   const category = useMemo(() => (slug ? getCategoryById(slug) : null), [slug]);
-  const [modalOpen, setModalOpen] = useState(false);
   const [showFullContent, setShowFullContent] = useState(false);
   const [openWeek, setOpenWeek] = useState<string | null>(null);
 
@@ -63,12 +61,12 @@ const CoursesSlug: React.FC = () => {
                 </div>
               </div>
               <div className="flex gap-3">
-                <button
-                  onClick={() => setModalOpen(true)}
+                <Link
+                  to="/contact"
                   className="rounded-2xl bg-zyron-cyan px-6 py-3 text-sm font-semibold text-black hover:brightness-95"
                 >
                   Enroll Now
-                </button>
+                </Link>
               </div>
             </div>
           </div>
@@ -223,20 +221,18 @@ const CoursesSlug: React.FC = () => {
                   >
                     View Details
                   </Link>
-                  <button
-                    onClick={() => setModalOpen(true)}
-                    className="flex-1 rounded-xl bg-zyron-cyan px-4 py-2 text-sm font-semibold text-black hover:brightness-95"
+                  <Link
+                    to="/contact"
+                    className="flex-1 rounded-xl bg-zyron-cyan px-4 py-2 text-sm font-semibold text-black hover:brightness-95 text-center"
                   >
                     Enroll Now
-                  </button>
+                  </Link>
                 </div>
               </div>
             ))}
           </div>
         </div>
       </section>
-
-      <CoursesEnrollModal open={modalOpen} onClose={() => setModalOpen(false)} />
     </div>
   );
 };

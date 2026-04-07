@@ -1,13 +1,11 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
 import Navbar from "../../components/Navbar";
-import CoursesEnrollModal from "../../components/CoursesEnrollModal";
 import { getCategoryById } from "../../content/coursesData";
 
 const CoursesCategory: React.FC = () => {
   const { categoryId } = useParams();
   const category = useMemo(() => (categoryId ? getCategoryById(categoryId) : null), [categoryId]);
-  const [modalOpen, setModalOpen] = useState(false);
 
   if (!category) {
     return (
@@ -55,20 +53,18 @@ const CoursesCategory: React.FC = () => {
                   >
                     View Details
                   </Link>
-                  <button
-                    onClick={() => setModalOpen(true)}
-                    className="flex-1 rounded-xl bg-zyron-cyan px-4 py-2 text-sm font-semibold text-black hover:brightness-95"
+                  <Link
+                    to="/contact"
+                    className="flex-1 rounded-xl bg-zyron-cyan px-4 py-2 text-sm font-semibold text-black hover:brightness-95 text-center"
                   >
                     Enroll Now
-                  </button>
+                  </Link>
                 </div>
               </div>
             ))}
           </div>
         </div>
       </section>
-
-      <CoursesEnrollModal open={modalOpen} onClose={() => setModalOpen(false)} />
     </div>
   );
 };

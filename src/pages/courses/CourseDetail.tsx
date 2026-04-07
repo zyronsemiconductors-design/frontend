@@ -1,13 +1,11 @@
 import React, { useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Navbar from "../../components/Navbar";
-import CoursesEnrollModal from "../../components/CoursesEnrollModal";
 import { getCourseBySlug } from "../../content/coursesData";
 
 const CourseDetail: React.FC = () => {
   const { courseName } = useParams();
   const course = useMemo(() => (courseName ? getCourseBySlug(courseName) : null), [courseName]);
-  const [modalOpen, setModalOpen] = useState(false);
   const [showFullContent, setShowFullContent] = useState(false);
   const [openWeek, setOpenWeek] = useState<string | null>(null);
 
@@ -61,12 +59,12 @@ const CourseDetail: React.FC = () => {
               </div>
             </div>
             <div className="flex gap-3">
-              <button
-                onClick={() => setModalOpen(true)}
+              <Link
+                to="/contact"
                 className="rounded-2xl bg-zyron-cyan px-6 py-3 text-sm font-semibold text-black hover:brightness-95"
               >
                 Enroll Now
-              </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -182,7 +180,6 @@ const CourseDetail: React.FC = () => {
         </div>
       </section>
 
-      <CoursesEnrollModal open={modalOpen} onClose={() => setModalOpen(false)} />
     </div>
   );
 };

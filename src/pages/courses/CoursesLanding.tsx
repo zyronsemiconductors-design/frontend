@@ -1,11 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar";
-import CoursesEnrollModal from "../../components/CoursesEnrollModal";
 import { getCourseCategories } from "../../content/coursesData";
 
 const CoursesLanding: React.FC = () => {
-  const [modalOpen, setModalOpen] = useState(false);
   const categories = getCourseCategories();
 
   return (
@@ -27,12 +25,12 @@ const CoursesLanding: React.FC = () => {
             >
               Explore Courses
             </a>
-            <button
-              onClick={() => setModalOpen(true)}
+            <Link
+              to="/contact"
               className="rounded-2xl border border-gray-200 px-6 py-3 font-semibold text-gray-800 hover:bg-gray-50"
             >
               Enroll Now
-            </button>
+            </Link>
           </div>
         </div>
       </section>
@@ -64,7 +62,6 @@ const CoursesLanding: React.FC = () => {
         </div>
       </section>
 
-      <CoursesEnrollModal open={modalOpen} onClose={() => setModalOpen(false)} />
     </div>
   );
 };
