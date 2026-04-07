@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { FileText, Save, Eye, EyeOff, Trash2, Edit2, Check } from 'lucide-react';
 import ContentFieldEditor from '../components/ContentFieldEditor';
+import Eng from '../content/Eng';
 import { CMS_PAGES, getDefaultSectionContent } from '../cms/sectionConfig';
 
 const API_URL = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000').replace(/\/$/, '');
@@ -431,6 +432,30 @@ const PageContentManagement: React.FC = () => {
             );
         };
 
+        const renderCoursesEditor = () => {
+            return (
+                <div className="space-y-4">
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                        <p className="text-sm font-medium text-gray-300">Courses Content</p>
+                        <div className="flex gap-2">
+                            <button
+                                onClick={() => updateContent(Eng.courses)}
+                                className="text-xs bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1 rounded"
+                            >
+                                Load Default Courses
+                            </button>
+                        </div>
+                    </div>
+                    <div className="bg-gray-900 rounded-lg p-4 max-h-[600px] overflow-y-auto">
+                        <ContentFieldEditor
+                            content={editedSection.content || {}}
+                            onChange={updateContent}
+                        />
+                    </div>
+                </div>
+            );
+        };
+
         const renderNavEditor = () => {
             const nav = editedSection.content || { main: [], services: [], why: [] };
 
@@ -564,6 +589,7 @@ const PageContentManagement: React.FC = () => {
             if (sectionKey === 'hero') return renderHeroEditor();
             if (sectionKey === 'jobs') return renderJobsEditor();
             if (sectionKey === 'nav') return renderNavEditor();
+            if (sectionKey === 'courses') return renderCoursesEditor();
             return (
                 <div className="bg-gray-900 rounded-lg p-4 max-h-[600px] overflow-y-auto">
                     <ContentFieldEditor
