@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import ServicesExactUI from "../components/ServicesExactUI";
 import PageHeader from "../components/PageHeader";
 import { usePageContent, getSectionContent } from "../utils/useCMS";
+import Eng from "../content/Eng";
 
 
 
@@ -12,7 +13,7 @@ const Services: React.FC = () => {
   const { content } = usePageContent('services');
   const header = getSectionContent(content, 'header') || { title: '', highlight: '', subtitle: '', bgImage: '' };
   const servicesList = getSectionContent(content, 'services_list') || [];
-  const courses = getSectionContent(content, 'courses') || null;
+  const courses = getSectionContent(content, 'courses') || Eng.courses || null;
 
   return (<>
     <div className="min-h-screen w-full flex  overflow-hidden">
