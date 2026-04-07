@@ -54,10 +54,31 @@ const ServicesExactUI: React.FC<Props> = ({ features1, courses }) => {
                 setActive(found);
                 return;
             }
+            const isCourseHash =
+                hash === "courses" ||
+                hash.startsWith("course-") ||
+                hash.startsWith("category-");
+            if (isCourseHash) {
+                const training = features1.find((f) => f.id === "training");
+                if (training) {
+                    setActive(training);
+                    return;
+                }
+            }
         }
 
         setActive(features1[0]);
     }, [location.hash, features1]);
+
+    useEffect(() => {
+        const hash = location.hash.replace("#", "");
+        if (!hash) return;
+        const el = document.getElementById(hash);
+        if (!el) return;
+        setTimeout(() => {
+            el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 0);
+    }, [location.hash]);
 
     const handleSelect = (item: FeatureItem) => {
         setActive(item);
