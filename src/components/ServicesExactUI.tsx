@@ -167,7 +167,7 @@ const ServicesExactUI: React.FC<Props> = ({ features1, courses }) => {
                                 })()}
                             </div>
 
-                            {active.id === "training" && (
+                            {courses && (
                                 <div id="courses" className="mt-10 space-y-8 scroll-mt-28">
                                     <div className="space-y-2">
                                         {courses.title && (
