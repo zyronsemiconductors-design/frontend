@@ -1,3 +1,5 @@
+import { coursesFullContent } from "./coursesFullData";
+
 export type Course = {
   id: string;
   title: string;
@@ -12,6 +14,7 @@ export type Course = {
   mode: string;
   eligibility: string;
   certification: string;
+  fullContent?: string[];
 };
 
 export type CourseCategory = {
@@ -47,7 +50,8 @@ const courses: Course[] = [
     level: "Beginner to Intermediate",
     mode: "Instructor-led",
     eligibility: "B.E/B.Tech/M.Tech/M.E/Diploma graduates and freshers",
-    certification: "Course completion certificate"
+    certification: "Course completion certificate",
+    fullContent: coursesFullContent["dft-training"]
   },
   {
     id: "physical-design-training",
@@ -73,7 +77,8 @@ const courses: Course[] = [
     level: "Beginner to Intermediate",
     mode: "Instructor-led",
     eligibility: "B.E/B.Tech/M.Tech/M.E/Diploma graduates and freshers",
-    certification: "Course completion certificate"
+    certification: "Course completion certificate",
+    fullContent: coursesFullContent["physical-design-training"]
   },
   {
     id: "physical-verification",
@@ -96,7 +101,8 @@ const courses: Course[] = [
     level: "Beginner to Intermediate",
     mode: "Instructor-led",
     eligibility: "B.E/B.Tech/M.Tech/M.E/Diploma and working professionals",
-    certification: "Course completion certificate"
+    certification: "Course completion certificate",
+    fullContent: coursesFullContent["physical-verification"]
   },
   {
     id: "rtl-design-integration",
@@ -119,7 +125,8 @@ const courses: Course[] = [
     level: "Beginner to Intermediate",
     mode: "Instructor-led",
     eligibility: "B.E/B.Tech/M.Tech/M.E/Diploma graduates and freshers",
-    certification: "Course completion certificate"
+    certification: "Course completion certificate",
+    fullContent: coursesFullContent["rtl-design-integration"]
   },
   {
     id: "vlsi-design-verification",
@@ -143,7 +150,8 @@ const courses: Course[] = [
     level: "Beginner to Intermediate",
     mode: "Instructor-led",
     eligibility: "B.E/B.Tech/M.Tech/M.E graduates and freshers",
-    certification: "Course completion certificate"
+    certification: "Course completion certificate",
+    fullContent: coursesFullContent["vlsi-design-verification"]
   },
   {
     id: "mtech-internship",
@@ -164,7 +172,8 @@ const courses: Course[] = [
     level: "Intermediate",
     mode: "Instructor-led",
     eligibility: "M.Tech students",
-    certification: "Project completion certificate"
+    certification: "Project completion certificate",
+    fullContent: coursesFullContent["mtech-project-internship"]
   },
   {
     id: "vlsi-short-term-internship",
@@ -184,7 +193,8 @@ const courses: Course[] = [
     level: "Beginner",
     mode: "Instructor-led",
     eligibility: "B.Tech/BE 3rd-year students",
-    certification: "Internship completion certificate"
+    certification: "Internship completion certificate",
+    fullContent: coursesFullContent["vlsi-short-term-internship"]
   },
   {
     id: "advanced-digital-design",
@@ -205,7 +215,8 @@ const courses: Course[] = [
     level: "Beginner",
     mode: "Instructor-led",
     eligibility: "Students and professionals",
-    certification: "Course completion certificate"
+    certification: "Course completion certificate",
+    fullContent: coursesFullContent["advanced-digital-design"]
   },
   {
     id: "system-verilog-short-term",
@@ -226,7 +237,8 @@ const courses: Course[] = [
     level: "Beginner to Intermediate",
     mode: "Instructor-led",
     eligibility: "Students and professionals",
-    certification: "Course completion certificate"
+    certification: "Course completion certificate",
+    fullContent: coursesFullContent["system-verilog-short-term"]
   },
   {
     id: "system-verilog-constraints",
@@ -246,7 +258,8 @@ const courses: Course[] = [
     level: "Intermediate",
     mode: "Instructor-led",
     eligibility: "Students and professionals",
-    certification: "Course completion certificate"
+    certification: "Course completion certificate",
+    fullContent: coursesFullContent["system-verilog-constraints"]
   },
   {
     id: "uvm-basic",
@@ -267,7 +280,8 @@ const courses: Course[] = [
     level: "Intermediate",
     mode: "Instructor-led",
     eligibility: "Students and professionals",
-    certification: "Course completion certificate"
+    certification: "Course completion certificate",
+    fullContent: coursesFullContent["uvm-basic-course"]
   },
   {
     id: "verilog-short-term",
@@ -288,7 +302,8 @@ const courses: Course[] = [
     level: "Beginner",
     mode: "Instructor-led",
     eligibility: "Students and professionals",
-    certification: "Course completion certificate"
+    certification: "Course completion certificate",
+    fullContent: coursesFullContent["verilog-short-term"]
   },
   {
     id: "amba-protocol",
@@ -309,7 +324,8 @@ const courses: Course[] = [
     level: "Beginner to Intermediate",
     mode: "Instructor-led",
     eligibility: "Students and professionals",
-    certification: "Course completion certificate"
+    certification: "Course completion certificate",
+    fullContent: coursesFullContent["amba-protocol-training"]
   },
   {
     id: "python-training",
@@ -330,7 +346,8 @@ const courses: Course[] = [
     level: "Beginner",
     mode: "Instructor-led",
     eligibility: "Students and professionals",
-    certification: "Course completion certificate"
+    certification: "Course completion certificate",
+    fullContent: coursesFullContent["python-training"]
   },
   {
     id: "perl-training",
@@ -351,7 +368,8 @@ const courses: Course[] = [
     level: "Beginner",
     mode: "Instructor-led",
     eligibility: "Students and professionals",
-    certification: "Course completion certificate"
+    certification: "Course completion certificate",
+    fullContent: coursesFullContent["perl-training"]
   },
   {
     id: "linux-commands",
@@ -372,7 +390,8 @@ const courses: Course[] = [
     level: "Beginner",
     mode: "Instructor-led",
     eligibility: "Students and professionals",
-    certification: "Course completion certificate"
+    certification: "Course completion certificate",
+    fullContent: coursesFullContent["linux-commands"]
   },
   {
     id: "shell-script",
@@ -393,7 +412,8 @@ const courses: Course[] = [
     level: "Beginner",
     mode: "Instructor-led",
     eligibility: "Students and professionals",
-    certification: "Course completion certificate"
+    certification: "Course completion certificate",
+    fullContent: coursesFullContent["shell-script"]
   },
   {
     id: "gvim-training",
@@ -414,7 +434,8 @@ const courses: Course[] = [
     level: "Beginner",
     mode: "Instructor-led",
     eligibility: "Students and professionals",
-    certification: "Course completion certificate"
+    certification: "Course completion certificate",
+    fullContent: coursesFullContent["gvim-training"]
   }
 ];
 
@@ -465,4 +486,3 @@ export const getCourseCategories = () => categories;
 export const getCategoryById = (id: string) => categories.find((c) => c.id === id);
 export const getCourseBySlug = (slug: string) => courses.find((c) => c.slug === slug);
 export const getCoursesByCategory = (id: string) => courses.filter((c) => c.categoryId === id);
-

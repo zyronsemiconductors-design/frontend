@@ -57,24 +57,35 @@ const CoursesSlug: React.FC = () => {
 
         <section className="py-12">
           <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
-            <div className="lg:col-span-8 space-y-8">
-              <div className="rounded-2xl border border-gray-200 p-6 bg-white shadow-sm">
-                <h2 className="text-xl font-semibold text-gray-900">Overview</h2>
-                <p className="mt-2 text-gray-600">{course.overview}</p>
-              </div>
+          <div className="lg:col-span-8 space-y-8">
+            <div className="rounded-2xl border border-gray-200 p-6 bg-white shadow-sm">
+              <h2 className="text-xl font-semibold text-gray-900">Overview</h2>
+              <p className="mt-2 text-gray-600">{course.overview}</p>
+            </div>
 
+            <div className="rounded-2xl border border-gray-200 p-6 bg-white shadow-sm">
+              <h2 className="text-xl font-semibold text-gray-900">Syllabus</h2>
+              <ul className="mt-3 list-disc pl-6 space-y-2 text-gray-600">
+                {course.syllabus.map((item, idx) => (
+                  <li key={idx}>{item}</li>
+                ))}
+              </ul>
+            </div>
+
+            {course.fullContent && course.fullContent.length > 0 && (
               <div className="rounded-2xl border border-gray-200 p-6 bg-white shadow-sm">
-                <h2 className="text-xl font-semibold text-gray-900">Syllabus</h2>
+                <h2 className="text-xl font-semibold text-gray-900">Full Course Content</h2>
                 <ul className="mt-3 list-disc pl-6 space-y-2 text-gray-600">
-                  {course.syllabus.map((item, idx) => (
+                  {course.fullContent.map((item, idx) => (
                     <li key={idx}>{item}</li>
                   ))}
                 </ul>
               </div>
+            )}
 
-              <div className="rounded-2xl border border-gray-200 p-6 bg-white shadow-sm">
-                <h2 className="text-xl font-semibold text-gray-900">Tools Covered</h2>
-                <ul className="mt-3 list-disc pl-6 space-y-2 text-gray-600">
+            <div className="rounded-2xl border border-gray-200 p-6 bg-white shadow-sm">
+              <h2 className="text-xl font-semibold text-gray-900">Tools Covered</h2>
+              <ul className="mt-3 list-disc pl-6 space-y-2 text-gray-600">
                   {course.tools.map((tool, idx) => (
                     <li key={idx}>{tool}</li>
                   ))}

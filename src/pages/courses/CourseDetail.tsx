@@ -70,6 +70,17 @@ const CourseDetail: React.FC = () => {
               </ul>
             </div>
 
+            {course.fullContent && course.fullContent.length > 0 && (
+              <div className="rounded-2xl border border-gray-200 p-6 bg-white shadow-sm">
+                <h2 className="text-xl font-semibold text-gray-900">Full Course Content</h2>
+                <ul className="mt-3 list-disc pl-6 space-y-2 text-gray-600">
+                  {course.fullContent.map((item, idx) => (
+                    <li key={idx}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
             <div className="rounded-2xl border border-gray-200 p-6 bg-white shadow-sm">
               <h2 className="text-xl font-semibold text-gray-900">Tools Covered</h2>
               <ul className="mt-3 list-disc pl-6 space-y-2 text-gray-600">
