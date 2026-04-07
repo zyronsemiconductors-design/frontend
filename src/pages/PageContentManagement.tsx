@@ -431,11 +431,139 @@ const PageContentManagement: React.FC = () => {
             );
         };
 
+        const renderNavEditor = () => {
+            const nav = editedSection.content || { main: [], services: [], why: [] };
+
+            const updateNav = (key: 'main' | 'services' | 'why', nextList: any[]) => {
+                updateContent({ ...nav, [key]: nextList });
+            };
+
+            const renderNavList = (key: 'main' | 'services' | 'why', label: string) => {
+                const items = nav[key] || [];
+                return (
+                    <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                            <p className="text-sm font-medium text-gray-300">{label}</p>
+                            <button
+                                onClick={() => updateNav(key, [...items, { label: '', to: '' }])}
+                                className="text-xs bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded"
+                            >
+                                + Add
+                            </button>
+                        </div>
+                        {items.map((item: any, idx: number) => (
+                            <div key={idx} className="bg-gray-850 border border-gray-700 rounded-lg p-4 space-y-3">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <input
+                                        value={item.label || ''}
+                                        onChange={(e) => {
+                                            const next = [...items];
+                                            next[idx] = { ...item, label: e.target.value };
+                                            updateNav(key, next);
+                                        }}
+                                        className="w-full bg-gray-700 text-white rounded px-3 py-2 text-sm"
+                                        placeholder="Label"
+                                    />
+                                    <input
+                                        value={item.to || ''}
+                                        onChange={(e) => {
+                                            const next = [...items];
+                                            next[idx] = { ...item, to: e.target.value };
+                                            updateNav(key, next);
+                                        }}
+                                        className="w-full bg-gray-700 text-white rounded px-3 py-2 text-sm"
+                                        placeholder="Link (e.g. /services#courses)"
+                                    />
+                                </div>
+
+                                {Array.isArray(item.children) && (
+                                    <div className="space-y-3">
+                                        <div className="flex items-center justify-between">
+                                            <p className="text-xs font-medium text-gray-400">Children</p>
+                                            <button
+                                                onClick={() => {
+                                                    const next = [...items];
+                                                    const children = [...(item.children || []), { label: '', to: '' }];
+                                                    next[idx] = { ...item, children };
+                                                    updateNav(key, next);
+                                                }}
+                                                className="text-xs bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded"
+                                            >
+                                                + Add Child
+                                            </button>
+                                        </div>
+                                        {(item.children || []).map((child: any, cidx: number) => (
+                                            <div key={cidx} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                <input
+                                                    value={child.label || ''}
+                                                    onChange={(e) => {
+                                                        const next = [...items];
+                                                        const children = [...(item.children || [])];
+                                                        children[cidx] = { ...child, label: e.target.value };
+                                                        next[idx] = { ...item, children };
+                                                        updateNav(key, next);
+                                                    }}
+                                                    className="w-full bg-gray-700 text-white rounded px-3 py-2 text-sm"
+                                                    placeholder="Child label"
+                                                />
+                                                <input
+                                                    value={child.to || ''}
+                                                    onChange={(e) => {
+                                                        const next = [...items];
+                                                        const children = [...(item.children || [])];
+                                                        children[cidx] = { ...child, to: e.target.value };
+                                                        next[idx] = { ...item, children };
+                                                        updateNav(key, next);
+                                                    }}
+                                                    className="w-full bg-gray-700 text-white rounded px-3 py-2 text-sm"
+                                                    placeholder="Child link"
+                                                />
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+
+                                <div className="flex justify-between">
+                                    <button
+                                        onClick={() => {
+                                            const next = [...items];
+                                            next[idx] = Array.isArray(item.children)
+                                                ? { ...item, children: undefined }
+                                                : { ...item, children: [] };
+                                            updateNav(key, next);
+                                        }}
+                                        className="text-xs text-gray-300 hover:text-white"
+                                    >
+                                        {Array.isArray(item.children) ? 'Hide Children' : 'Enable Children'}
+                                    </button>
+                                    <button
+                                        onClick={() => updateNav(key, items.filter((_: any, i: number) => i !== idx))}
+                                        className="text-xs text-red-400 hover:text-red-300"
+                                    >
+                                        Remove
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                );
+            };
+
+            return (
+                <div className="space-y-6">
+                    {renderNavList('main', 'Main')}
+                    {renderNavList('services', 'Services')}
+                    {renderNavList('why', 'Why')}
+                </div>
+            );
+        };
+
         const renderContentEditor = () => {
             if (sectionKey === 'services_list') return renderServicesEditor();
             if (sectionKey === 'advantages') return renderAdvantagesEditor();
             if (sectionKey === 'hero') return renderHeroEditor();
             if (sectionKey === 'jobs') return renderJobsEditor();
+            if (sectionKey === 'nav') return renderNavEditor();
             return (
                 <div className="bg-gray-900 rounded-lg p-4 max-h-[600px] overflow-y-auto">
                     <ContentFieldEditor
