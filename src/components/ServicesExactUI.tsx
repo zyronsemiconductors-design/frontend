@@ -39,6 +39,7 @@ const ServicesExactUI: React.FC<Props> = ({ features1, courses }) => {
     const navigate = useNavigate();
 
     const [active, setActive] = useState<FeatureItem | null>(null);
+    const [openCategory, setOpenCategory] = useState<string | null>(null);
 
     // 🔹 Sync active item from hash (#design)
     useEffect(() => {
@@ -180,8 +181,38 @@ const ServicesExactUI: React.FC<Props> = ({ features1, courses }) => {
 
                                     {courses?.categories && courses.categories.length > 0 ? (
                                         <div className="space-y-10">
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                                {courses.categories.map((category) => (
+                                                    <button
+                                                        key={category.id}
+                                                        onClick={() => {
+                                                            setOpenCategory((prev) =>
+                                                                prev === category.id ? null : category.id
+                                                            );
+                                                        }}
+                                                        className={`rounded-2xl border px-5 py-4 text-left transition shadow-sm ${openCategory === category.id
+                                                            ? "border-zyron-cyan bg-zyron-cyan/5"
+                                                            : "border-gray-200 bg-white hover:shadow-md"
+                                                            }`}
+                                                    >
+                                                        <div className="text-lg font-semibold text-gray-900">
+                                                            {category.title}
+                                                        </div>
+                                                        {category.description && (
+                                                            <div className="mt-1 text-sm text-gray-600">
+                                                                {category.description}
+                                                            </div>
+                                                        )}
+                                                    </button>
+                                                ))}
+                                            </div>
+
                                             {courses.categories.map((category) => (
-                                                <div key={category.id} id={`category-${category.id}`} className="space-y-6">
+                                                <div
+                                                    key={category.id}
+                                                    id={`category-${category.id}`}
+                                                    className={`space-y-6 ${openCategory === category.id ? "block" : "hidden"}`}
+                                                >
                                                     <div className="space-y-2">
                                                         <h4 className="text-xl font-semibold text-gray-900">{category.title}</h4>
                                                         {category.description && (
