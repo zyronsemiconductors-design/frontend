@@ -16,6 +16,17 @@ interface CourseSection {
         duration?: string;
         sections?: { title: string; items: string[] }[];
     }[];
+    categories?: {
+        id: string;
+        title: string;
+        description?: string;
+        courses: {
+            id: string;
+            title: string;
+            duration?: string;
+            sections?: { title: string; items: string[] }[];
+        }[];
+    }[];
 }
 
 interface Props {
@@ -135,7 +146,7 @@ const ServicesExactUI: React.FC<Props> = ({ features1, courses }) => {
                                 })()}
                             </div>
 
-                            {active.id === "training" && courses?.list && courses.list.length > 0 && (
+                            {active.id === "training" && (
                                 <div id="courses" className="mt-10 space-y-8 scroll-mt-28">
                                     <div className="space-y-2">
                                         {courses.title && (
@@ -146,36 +157,83 @@ const ServicesExactUI: React.FC<Props> = ({ features1, courses }) => {
                                         )}
                                     </div>
 
-                                    <div className="space-y-8">
-                                        {courses.list.map((course) => (
-                                            <div
-                                                key={course.id}
-                                                id={`course-${course.id}`}
-                                                className="border border-gray-200 rounded-2xl p-6 shadow-sm bg-white scroll-mt-28"
-                                            >
-                                                <div className="flex flex-wrap items-baseline gap-3 mb-4">
-                                                    <h4 className="text-xl font-semibold text-gray-900">{course.title}</h4>
-                                                    {course.duration && (
-                                                        <span className="text-sm font-medium text-zyron-cyan bg-zyron-cyan/10 px-3 py-1 rounded-full">
-                                                            {course.duration}
-                                                        </span>
-                                                    )}
+                                    {courses?.categories && courses.categories.length > 0 ? (
+                                        <div className="space-y-10">
+                                            {courses.categories.map((category) => (
+                                                <div key={category.id} id={`category-${category.id}`} className="space-y-6">
+                                                    <div className="space-y-2">
+                                                        <h4 className="text-xl font-semibold text-gray-900">{category.title}</h4>
+                                                        {category.description && (
+                                                            <p className="text-gray-600">{category.description}</p>
+                                                        )}
+                                                    </div>
+                                                    <div className="space-y-8">
+                                                        {category.courses.map((course) => (
+                                                            <div
+                                                                key={course.id}
+                                                                id={`course-${course.id}`}
+                                                                className="border border-gray-200 rounded-2xl p-6 shadow-sm bg-white scroll-mt-28"
+                                                            >
+                                                                <div className="flex flex-wrap items-baseline gap-3 mb-4">
+                                                                    <h5 className="text-xl font-semibold text-gray-900">{course.title}</h5>
+                                                                    {course.duration && (
+                                                                        <span className="text-sm font-medium text-zyron-cyan bg-zyron-cyan/10 px-3 py-1 rounded-full">
+                                                                            {course.duration}
+                                                                        </span>
+                                                                    )}
+                                                                </div>
+                                                                <div className="space-y-5">
+                                                                    {(course.sections || []).map((section, idx) => (
+                                                                        <div key={idx} className="space-y-2">
+                                                                            <h6 className="text-lg font-semibold text-gray-900">{section.title}</h6>
+                                                                            <ul className="list-disc pl-6 space-y-2 text-gray-600">
+                                                                                {(section.items || []).map((item, itemIdx) => (
+                                                                                    <li key={itemIdx}>{item}</li>
+                                                                                ))}
+                                                                            </ul>
+                                                                        </div>
+                                                                    ))}
+                                                                </div>
+                                                            </div>
+                                                        ))}
+                                                    </div>
                                                 </div>
-                                                <div className="space-y-5">
-                                                    {(course.sections || []).map((section, idx) => (
-                                                        <div key={idx} className="space-y-2">
-                                                            <h5 className="text-lg font-semibold text-gray-900">{section.title}</h5>
-                                                            <ul className="list-disc pl-6 space-y-2 text-gray-600">
-                                                                {(section.items || []).map((item, itemIdx) => (
-                                                                    <li key={itemIdx}>{item}</li>
-                                                                ))}
-                                                            </ul>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        courses?.list && courses.list.length > 0 && (
+                                            <div className="space-y-8">
+                                                {courses.list.map((course) => (
+                                                    <div
+                                                        key={course.id}
+                                                        id={`course-${course.id}`}
+                                                        className="border border-gray-200 rounded-2xl p-6 shadow-sm bg-white scroll-mt-28"
+                                                    >
+                                                        <div className="flex flex-wrap items-baseline gap-3 mb-4">
+                                                            <h4 className="text-xl font-semibold text-gray-900">{course.title}</h4>
+                                                            {course.duration && (
+                                                                <span className="text-sm font-medium text-zyron-cyan bg-zyron-cyan/10 px-3 py-1 rounded-full">
+                                                                    {course.duration}
+                                                                </span>
+                                                            )}
                                                         </div>
-                                                    ))}
-                                                </div>
+                                                        <div className="space-y-5">
+                                                            {(course.sections || []).map((section, idx) => (
+                                                                <div key={idx} className="space-y-2">
+                                                                    <h5 className="text-lg font-semibold text-gray-900">{section.title}</h5>
+                                                                    <ul className="list-disc pl-6 space-y-2 text-gray-600">
+                                                                        {(section.items || []).map((item, itemIdx) => (
+                                                                            <li key={itemIdx}>{item}</li>
+                                                                        ))}
+                                                                    </ul>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                ))}
                                             </div>
-                                        ))}
-                                    </div>
+                                        )
+                                    )}
                                 </div>
                             )}
                         </>

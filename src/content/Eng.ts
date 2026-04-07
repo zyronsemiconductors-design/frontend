@@ -489,7 +489,7 @@ export const Eng = {
             title: "Training & Upskilling Services",
             content: [
                 "We deliver structured training programs to help engineers build strong foundations in VLSI and semiconductor technologies.",
-                "Courses are listed below with detailed modules and hands-on training.",
+                "Courses are organized by category with detailed modules and hands-on training.",
                 "Customized programs are available for corporate teams, fresh graduates, and academic institutions."
             ],
         },
@@ -497,146 +497,342 @@ export const Eng = {
 
     courses: {
         title: "Courses",
-        subtitle: "Industry-focused programs with hands-on training and real-time projects.",
-        list: [
+        subtitle: "Industry-focused programs with hands-on training, real-time projects, and placement support.",
+        categories: [
             {
-                id: "dv",
-                title: "Design and Verification Engineer (DV)",
-                duration: "6 months",
-                sections: [
+                id: "freshers",
+                title: "Freshers Programs",
+                description: "Comprehensive long-term programs designed for fresh graduates.",
+                courses: [
                     {
-                        title: "Core Topics",
-                        items: [
-                            "Advanced digital design",
-                            "Verilog",
-                            "SystemVerilog",
-                            "UVM",
+                        id: "vlsidv",
+                        title: "VLSI Design & Verification",
+                        duration: "8 months (30 weeks)",
+                        sections: [
+                            {
+                                title: "Highlights",
+                                items: [
+                                    "Front-end VLSI fundamentals: ASIC flow, advanced digital design, CMOS, SoC verification",
+                                    "Verilog, SystemVerilog, UVM, Linux, version control, scripting, and soft skills",
+                                    "75+ assignments and multiple hands-on projects",
+                                ],
+                            },
+                            {
+                                title: "Phases",
+                                items: [
+                                    "Phase 1 (3 months): Advanced digital design, GVIM, Linux basics, Verilog",
+                                    "Phase 2 (2.5 months): SystemVerilog, UVM, Linux hands-on, soft skills",
+                                    "Phase 3 (2.5 months): AXI TB development, Ethernet MAC verification, Python, ASIC flow & SoC concepts",
+                                ],
+                            },
+                            {
+                                title: "Tools",
+                                items: [
+                                    "Mentor Graphics, Questasim, Synopsys VCS",
+                                ],
+                            },
                         ],
                     },
                     {
-                        title: "Hands-on Training",
-                        items: [
-                            "Linux commands (hands-on)",
-                            "GVIM text editor, Linux basic commands",
-                            "Regular weekly assignments",
-                            "AXI protocol and testbench development",
-                            "UART verification using SV and UVM",
-                            "ASIC flow and SoC verification concepts",
-                            "Real-time projects",
+                        id: "rtl-integration",
+                        title: "RTL Design & Integration",
+                        duration: "6 months",
+                        sections: [
+                            {
+                                title: "Core Focus",
+                                items: [
+                                    "Manual integration, glue logic, Linting, CDC, UPF, SDC, Synthesis, LEC, STA",
+                                    "Industry-standard practices for SoC integration",
+                                ],
+                            },
+                            {
+                                title: "Tools",
+                                items: [
+                                    "Synopsys SpyGlass (Lint & CDC), Design Compiler, PrimeTime",
+                                ],
+                            },
+                        ],
+                    },
+                    {
+                        id: "dft",
+                        title: "DFT Training",
+                        duration: "8 months",
+                        sections: [
+                            {
+                                title: "Highlights",
+                                items: [
+                                    "DFT fundamentals, scan architecture, ATPG DRC & simulation debug",
+                                    "JTAG, MBIST, LogicBIST, test compression (TestKompress)",
+                                    "Placement support until job placement",
+                                ],
+                            },
+                            {
+                                title: "Hands-on",
+                                items: [
+                                    "Complex SoC design with multiple memories",
+                                    "ATPG pattern generation and compressed pattern validation",
+                                ],
+                            },
+                            {
+                                title: "Tools",
+                                items: [
+                                    "Synopsys TetraMax, MentorGraphics Tessent (12 months access)",
+                                ],
+                            },
+                        ],
+                    },
+                    {
+                        id: "pd",
+                        title: "Physical Design Training",
+                        duration: "8 months",
+                        sections: [
+                            {
+                                title: "Highlights",
+                                items: [
+                                    "Complete backend flow (netlist to GDSII), floorplanning to timing closure",
+                                    "Linux, TCL, timing, power analysis, ECO",
+                                    "40+ assignments and real-time projects",
+                                ],
+                            },
+                            {
+                                title: "Tools",
+                                items: [
+                                    "Synopsys and Cadence Innovus tools (DC, ICC II, StarRC, PT, ICV)",
+                                ],
+                            },
+                        ],
+                    },
+                    {
+                        id: "pv",
+                        title: "Physical Verification",
+                        duration: "4 months",
+                        sections: [
+                            {
+                                title: "Highlights",
+                                items: [
+                                    "DRC, LVS, ERC, antenna, latch-up, EM/IR, DFM, ESD checks",
+                                    "70% hands-on labs and 20+ assignments",
+                                ],
+                            },
+                            {
+                                title: "Tools",
+                                items: [
+                                    "IC Validator, Mentor Calibre",
+                                ],
+                            },
                         ],
                     },
                 ],
             },
             {
-                id: "dft",
-                title: "Design for Testability Engineer (DFT)",
-                duration: "6 months",
-                sections: [
+                id: "protocols",
+                title: "Protocols",
+                description: "Protocol training with focus on timing, architecture, and testbench development.",
+                courses: [
                     {
-                        title: "Core Topics",
-                        items: [
-                            "DFT fundamentals",
-                            "Fault models: stuck-at, transition delay, path delay",
-                            "SoC scan architecture and scan design types",
-                            "ATPG DRC debug and simulation debug",
-                            "JTAG, MBIST, and LogicBIST techniques",
-                            "Test compression using TestKompress",
-                            "Hierarchical scan design and DFT diagnosis",
-                        ],
-                    },
-                    {
-                        title: "Hands-on Training",
-                        items: [
-                            "Work on complex SoC design with multiple memory blocks",
-                            "Apply MemoryBIST to test embedded memories",
-                            "Boundary scan for MBIST controllers with fewer external pins",
-                            "ATPG pattern generation for multiple fault models",
-                            "Simulation-based validation of compressed test patterns",
-                            "Tools: Synopsys TetraMax, MentorGraphics Tessent",
+                        id: "amba",
+                        title: "AMBA Protocol Training (AXI, AHB, APB)",
+                        sections: [
+                            {
+                                title: "Coverage",
+                                items: [
+                                    "AXI4.0, AHB2.0, APB protocol fundamentals",
+                                    "Timing diagrams, transaction analysis, and protocol testbench concepts",
+                                ],
+                            },
                         ],
                     },
                 ],
             },
             {
-                id: "pd",
-                title: "Physical Design Engineer (PD)",
-                duration: "6 months",
-                sections: [
+                id: "scripting",
+                title: "Scripting Languages",
+                description: "Practical scripting and tooling courses for engineers.",
+                courses: [
                     {
-                        title: "Core Topics",
-                        items: [
-                            "Device fundamentals and IC fabrication",
-                            "Timing concepts and advanced digital design",
-                            "Linux OS and TCL scripting",
-                            "Complete VLSI backend flow (netlist to GDSII)",
-                            "Floorplanning, placement, power planning",
-                            "Scan chain reordering, global routing",
-                            "Clock tree synthesis (CTS), final routing",
-                            "Timing closure, power analysis, ECO",
-                            "Physical verification using Synopsys and Cadence Innovus tools (DC, ICC II, StarRC, PT, ICV)",
+                        id: "linux",
+                        title: "Linux Commands",
+                        sections: [
+                            {
+                                title: "Topics",
+                                items: [
+                                    "Linux/UNIX basics, shell, text editors, revision management",
+                                    "GIT hands-on, file operations, networking utilities",
+                                ],
+                            },
                         ],
                     },
                     {
-                        title: "Hands-on Training",
-                        items: [
-                            "Multiple real-time projects using Synopsys and Cadence Innovus tools",
-                            "Projects at block level and full-chip level",
-                            "Practical exposure with industry-relevant examples",
-                            "In-depth, micro-level understanding of the physical design flow",
-                            "Focus on floorplanning, placement and routing, CTS, and timing closure",
-                            "Tools: Synopsys and Cadence Innovus",
+                        id: "shell",
+                        title: "Shell Scripting",
+                        sections: [
+                            {
+                                title: "Topics",
+                                items: [
+                                    "Shell basics, control flow, I/O, pipes, functions, regex",
+                                    "Projects and assessment with practical exercises",
+                                ],
+                            },
+                        ],
+                    },
+                    {
+                        id: "python",
+                        title: "Python Training",
+                        sections: [
+                            {
+                                title: "Topics",
+                                items: [
+                                    "Core Python, data structures, regex, file handling, OOP",
+                                    "Scripting for automation and VLSI workflows",
+                                ],
+                            },
+                        ],
+                    },
+                    {
+                        id: "perl",
+                        title: "PERL Training",
+                        sections: [
+                            {
+                                title: "Topics",
+                                items: [
+                                    "Core PERL, regex, file handling, modules",
+                                    "Automation and VLSI scripting use cases",
+                                ],
+                            },
+                        ],
+                    },
+                    {
+                        id: "gvim",
+                        title: "GVIM Training",
+                        sections: [
+                            {
+                                title: "Topics",
+                                items: [
+                                    "Editor modes, navigation, search/replace",
+                                    "Productivity shortcuts and file operations",
+                                ],
+                            },
                         ],
                     },
                 ],
             },
             {
-                id: "rtl",
-                title: "RTL Design Engineer",
-                duration: "6 months",
-                sections: [
+                id: "short-term",
+                title: "Short-Term Courses",
+                description: "Focused short-duration programs with intensive coverage.",
+                courses: [
                     {
-                        title: "RTL Design Fundamentals",
-                        items: [
-                            "Digital design basics",
-                            "RTL coding guidelines",
-                            "Verilog and SystemVerilog overview",
-                            "Coding styles and best practices",
+                        id: "adv-dig",
+                        title: "Advanced Digital Design",
+                        duration: "3 weeks",
+                        sections: [
+                            {
+                                title: "Topics",
+                                items: [
+                                    "Combinational & sequential logic, K-maps, FSMs, STA",
+                                    "300+ problems and interview-focused practice",
+                                ],
+                            },
                         ],
                     },
                     {
-                        title: "RTL Integration Basics",
-                        items: [
-                            "SoC architecture overview",
-                            "IP-level vs top-level integration",
-                            "Manual integration concepts",
-                            "Glue logic development",
+                        id: "sv-constraints",
+                        title: "SystemVerilog Constraints, Coverage & Assertions",
+                        duration: "30 hours",
+                        sections: [
+                            {
+                                title: "Topics",
+                                items: [
+                                    "Constraints & randomization, functional & code coverage",
+                                    "Assertion-based verification with hands-on examples",
+                                ],
+                            },
                         ],
                     },
                     {
-                        title: "Linting",
-                        items: [
-                            "Introduction to RTL linting",
-                            "Common lint rules and violations",
-                            "Debugging and fixing lint issues",
-                            "Waivers and best practice",
+                        id: "sv",
+                        title: "SystemVerilog Training",
+                        duration: "9 weeks",
+                        sections: [
+                            {
+                                title: "Topics",
+                                items: [
+                                    "SV language constructs, OOP, constraints, coverage, DPI",
+                                    "15+ assignments and lab sessions",
+                                ],
+                            },
                         ],
                     },
                     {
-                        title: "Clock Domain Crossing",
-                        items: [
-                            "Multi-clock design challenges",
-                            "CDC concepts and synchronizers",
-                            "SpyGlass-based CDC analysis",
-                            "Debugging CDC violations",
+                        id: "uvm-basic",
+                        title: "UVM Basic",
+                        duration: "5 weeks",
+                        sections: [
+                            {
+                                title: "Topics",
+                                items: [
+                                    "UVM methodology, TB architecture, sequences, reporting",
+                                    "Projects: APB UVC and memory TB development",
+                                ],
+                            },
                         ],
                     },
                     {
-                        title: "Low Power Design and UPF",
-                        items: [
-                            "Need for low-power design",
-                            "Power domains and power states",
-                            "UPF basics and syntax",
-                            "Isolation, retention, level shifters",
+                        id: "verilog",
+                        title: "Verilog for Design & Verification",
+                        duration: "10 weeks",
+                        sections: [
+                            {
+                                title: "Topics",
+                                items: [
+                                    "Verilog deep dive, RTL coding, testbench development",
+                                    "Multiple design and verification projects with labs",
+                                ],
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "internships",
+                title: "B.Tech & M.Tech Project Internships",
+                description: "Industry-aligned internships and project programs.",
+                courses: [
+                    {
+                        id: "vlsi-intern",
+                        title: "VLSI Short-Term Internship",
+                        duration: "6 weeks",
+                        sections: [
+                            {
+                                title: "Modules",
+                                items: [
+                                    "Verilog deep dive + hands-on projects",
+                                    "Physical design basics (PnR flow exposure)",
+                                    "Digital design deep dive",
+                                ],
+                            },
+                        ],
+                    },
+                    {
+                        id: "mtech-intern",
+                        title: "M.Tech Project & Internship Program",
+                        duration: "10 months",
+                        sections: [
+                            {
+                                title: "Phases",
+                                items: [
+                                    "Phase 1 (2.5 months): Advanced digital design, GVIM, Verilog, Linux basics",
+                                    "Phase 2 (3.5 months): SystemVerilog, UVM, AXI TB, Python, ASIC/SoC concepts",
+                                    "Phase 3 (4 months): M.Tech project or internship project",
+                                ],
+                            },
+                            {
+                                title: "Notes",
+                                items: [
+                                    "Projects on IEEE standards and protocols (AXI, AHB, USB, PCIe)",
+                                    "One-year experience letter on completion",
+                                ],
+                            },
                         ],
                     },
                 ],
@@ -896,10 +1092,6 @@ export const Eng = {
                 to: "/services#training",
                 children: [
                     { label: "Courses", to: "/services#courses" },
-                    { label: "Design & Verification Engineer (DV) - 6 Months", to: "/services#course-dv" },
-                    { label: "Design for Testability Engineer (DFT) - 6 Months", to: "/services#course-dft" },
-                    { label: "Physical Design Engineer (PD) - 6 Months", to: "/services#course-pd" },
-                    { label: "RTL Design Engineer - 6 Months", to: "/services#course-rtl" },
                 ],
             },
         ],
