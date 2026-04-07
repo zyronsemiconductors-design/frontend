@@ -14,6 +14,8 @@ import Community from './pages/Community';
 import Resources from './pages/Resources';
 import ScrollToTop from './components/ScrollToTop';
 import NotFound from './pages/NotFound';
+import CoursesLanding from './pages/courses/CoursesLanding';
+import CoursesSlug from './pages/courses/CoursesSlug';
 
 // Admin Imports
 import { AuthProvider } from './context/AuthContext';
@@ -55,6 +57,8 @@ const AnimatedRoutes = () => {
             <Route path="/contact" element={<Contact />} />
             <Route path="/community" element={<Community />} />
             <Route path="/resources" element={<Resources />} />
+            <Route path="/courses" element={<CoursesLanding />} />
+            <Route path="/courses/:slug" element={<CoursesSlug />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
 

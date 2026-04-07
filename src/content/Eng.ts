@@ -1086,12 +1086,22 @@ export const Eng = {
             { label: "Design Signoff", to: "/services#signoff" },
             { label: "Synthesis & STA", to: "/services#synthesis-sta" },
             { label: "Staff Augmentation", to: "/services#staff" },
-            { label: "Courses", to: "/services#courses" },
             {
                 label: "Training & Upskilling",
                 to: "/services#training",
                 children: [
                     { label: "Courses", to: "/services#courses" },
+                ],
+            },
+            {
+                label: "Courses",
+                to: "/courses",
+                children: [
+                    { label: "Freshers Programs", to: "/courses/freshers" },
+                    { label: "B.Tech / M.Tech Internships", to: "/courses/internships" },
+                    { label: "Short-Term Courses", to: "/courses/short-term" },
+                    { label: "Protocols Training", to: "/courses/protocols" },
+                    { label: "Scripting Languages", to: "/courses/scripting" },
                 ],
             },
         ],
