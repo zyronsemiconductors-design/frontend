@@ -5,7 +5,7 @@ import React from "react";
 
 interface MobileDropdownProps {
     title: string;
-    items: { label: string; to: string }[];
+    items: { label: string; to?: string; children?: { label: string; to?: string }[] }[];
     open: boolean;
     onToggle: () => void;
 }
@@ -38,15 +38,58 @@ export const MobileDropdown: React.FC<MobileDropdownProps> = ({
                         className="overflow-hidden"
                     >
                         <div className="pb-4 pl-4 space-y-3">
-                            {items.map((item) => (
-                                <Link
-                                    key={item.to}
-                                    to={item.to}
-                                    className="block text-gray-600 text-base hover:text-zyron-cyan transition"
-                                >
-                                    {item.label}
-                                </Link>
-                            ))}
+                            {items.map((item) => {
+                                if (item.children && item.children.length > 0) {
+                                    return (
+                                        <div key={item.label} className="space-y-2">
+                                            <div className="text-gray-700 text-base font-medium">
+                                                {item.label}
+                                            </div>
+                                            <div className="pl-3 space-y-2">
+                                                {item.children.map((child) => (
+                                                    child.to ? (
+                                                        <Link
+                                                            key={child.label}
+                                                            to={child.to}
+                                                            className="block text-gray-600 text-sm hover:text-zyron-cyan transition"
+                                                        >
+                                                            {child.label}
+                                                        </Link>
+                                                    ) : (
+                                                        <div
+                                                            key={child.label}
+                                                            className="block text-gray-600 text-sm"
+                                                        >
+                                                            {child.label}
+                                                        </div>
+                                                    )
+                                                ))}
+                                            </div>
+                                        </div>
+                                    );
+                                }
+
+                                if (!item.to) {
+                                    return (
+                                        <div
+                                            key={item.label}
+                                            className="block text-gray-600 text-base"
+                                        >
+                                            {item.label}
+                                        </div>
+                                    );
+                                }
+
+                                return (
+                                    <Link
+                                        key={item.to}
+                                        to={item.to}
+                                        className="block text-gray-600 text-base hover:text-zyron-cyan transition"
+                                    >
+                                        {item.label}
+                                    </Link>
+                                );
+                            })}
                         </div>
                     </motion.div>
                 )}

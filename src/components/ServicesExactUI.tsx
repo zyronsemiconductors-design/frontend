@@ -84,9 +84,43 @@ const ServicesExactUI: React.FC<Props> = ({ features1 }) => {
                             </h2>
 
                             <div className="space-y-6 text-gray-600 text-lg leading-relaxed">
-                                {active.content.map((para, i) => (
-                                    <p key={i}>{para}</p>
-                                ))}
+                                {(() => {
+                                    const blocks: React.ReactNode[] = [];
+                                    let i = 0;
+                                    while (i < active.content.length) {
+                                        const line = active.content[i];
+                                        const isBullet = line.trim().startsWith("• ");
+                                        if (isBullet) {
+                                            const items: string[] = [];
+                                            while (i < active.content.length && active.content[i].trim().startsWith("• ")) {
+                                                items.push(active.content[i].trim().replace(/^•\s+/, ""));
+                                                i += 1;
+                                            }
+                                            blocks.push(
+                                                <ul key={`list-${i}`} className="list-disc pl-6 space-y-2">
+                                                    {items.map((item, idx) => (
+                                                        <li key={idx}>{item}</li>
+                                                    ))}
+                                                </ul>
+                                            );
+                                            continue;
+                                        }
+
+                                        if (line.trim().endsWith(":")) {
+                                            blocks.push(
+                                                <h3 key={`head-${i}`} className="text-xl font-semibold text-gray-900">
+                                                    {line}
+                                                </h3>
+                                            );
+                                            i += 1;
+                                            continue;
+                                        }
+
+                                        blocks.push(<p key={`p-${i}`}>{line}</p>);
+                                        i += 1;
+                                    }
+                                    return blocks;
+                                })()}
                             </div>
                         </>
                     ) : (

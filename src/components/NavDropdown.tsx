@@ -1,11 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ChevronRight } from "lucide-react";
 
 interface DropdownItem {
     label: string;
-    to: string;
+    to?: string;
+    children?: DropdownItem[];
 }
 
 interface NavDropdownProps {
@@ -50,16 +51,64 @@ const NavDropdown: React.FC<NavDropdownProps> = ({
                         className="absolute left-0 mt-3 w-60 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50"
                     >
                         <div className="py-2">
-                            {items.map((item) => (
-                                <Link
-                                    key={item.to}
-                                    to={item.to}
-                                    className="block px-5 py-3 text-sm text-gray-700 hover:bg-gray-100 hover:text-zyron-cyan transition"
-                                    onClick={onClose}
-                                >
-                                    {item.label}
-                                </Link>
-                            ))}
+                            {items.map((item) => {
+                                if (item.children && item.children.length > 0) {
+                                    return (
+                                        <div key={item.label} className="relative group">
+                                            <div className="flex items-center justify-between px-5 py-3 text-sm text-gray-700 hover:bg-gray-100 hover:text-zyron-cyan transition cursor-default">
+                                                <span>{item.label}</span>
+                                                <ChevronRight size={14} className="text-gray-400 group-hover:text-zyron-cyan" />
+                                            </div>
+
+                                            <div className="absolute top-0 left-full ml-2 w-72 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden opacity-0 invisible group-hover:opacity-100 group-hover:visible transition z-50">
+                                                <div className="py-2">
+                                                    {item.children.map((child) => (
+                                                        child.to ? (
+                                                            <Link
+                                                                key={child.label}
+                                                                to={child.to}
+                                                                className="block px-5 py-3 text-sm text-gray-700 hover:bg-gray-100 hover:text-zyron-cyan transition"
+                                                                onClick={onClose}
+                                                            >
+                                                                {child.label}
+                                                            </Link>
+                                                        ) : (
+                                                            <div
+                                                                key={child.label}
+                                                                className="block px-5 py-3 text-sm text-gray-600"
+                                                            >
+                                                                {child.label}
+                                                            </div>
+                                                        )
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    );
+                                }
+
+                                if (!item.to) {
+                                    return (
+                                        <div
+                                            key={item.label}
+                                            className="block px-5 py-3 text-sm text-gray-600"
+                                        >
+                                            {item.label}
+                                        </div>
+                                    );
+                                }
+
+                                return (
+                                    <Link
+                                        key={item.to}
+                                        to={item.to}
+                                        className="block px-5 py-3 text-sm text-gray-700 hover:bg-gray-100 hover:text-zyron-cyan transition"
+                                        onClick={onClose}
+                                    >
+                                        {item.label}
+                                    </Link>
+                                );
+                            })}
                         </div>
                     </motion.div>
                 )}
