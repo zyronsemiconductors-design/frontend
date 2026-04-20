@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { MobileDropdown } from "./MobileDropdown";
 import NavDropdown from "./NavDropdown";
 import { usePageSection } from "../utils/useCMS";
+import { Eng } from "../content/Eng";
 import logo from "../assets/zyronlogo.png";
 
 const Navbar: React.FC = () => {
@@ -14,7 +15,7 @@ const Navbar: React.FC = () => {
   const [mobileOpen, setMobileOpen] = useState<null | "services" | "why">(null);
   const location = useLocation();
   const { section: navSection } = usePageSection('global', 'nav');
-  const nav = navSection?.content || { main: [], services: [], why: [] };
+  const nav = navSection?.content || Eng.nav || { main: [], services: [], why: [] };
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 30);

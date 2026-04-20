@@ -8,16 +8,17 @@ import AboutSection from '../components/AboutSection';
 import ContactSection from '../components/ContactSection';
 import { usePageContent, getSectionContent } from '../utils/useCMS';
 import { ICON_MAP } from '../cms/iconMap';
+import { Eng } from '../content/Eng';
 
 const Home: React.FC = () => {
   const { content } = usePageContent('home');
 
   const getContent = (sectionKey: string) => getSectionContent(content, sectionKey);
 
-  const heroContent = getContent('hero') || [];
-  const servicesContent = getContent('services') || { title: '', subtitle: '', list: [] };
+  const heroContent = getContent('hero') || Eng.headers.home || [];
+  const servicesContent = getContent('services') || Eng.home.services || { title: '', subtitle: '', list: [] };
 
-  const cmsFeatures = getContent('features') || { title: '', subtitle: '', list: [] };
+  const cmsFeatures = getContent('features') || Eng.home.features || { title: '', subtitle: '', list: [] };
   const featuresContent = {
     ...cmsFeatures,
     list: (cmsFeatures.list || []).map((feature: any) => ({
@@ -26,8 +27,8 @@ const Home: React.FC = () => {
     }))
   };
 
-  const aboutContent = getContent('about') || { title: '', subtitle: '', paragraphs: [], skills: [] };
-  const contactContent = getContent('contact_info') || { title: '', formTitle: '', address: {}, emails: {}, phone: {}, website: {} };
+  const aboutContent = getContent('about') || Eng.home.about || { title: '', subtitle: '', paragraphs: [], skills: [] };
+  const contactContent = getContent('contact_info') || Eng.Common.contactInfo || { title: '', formTitle: '', address: {}, emails: {}, phone: {}, website: {} };
 
   return (
     <>
