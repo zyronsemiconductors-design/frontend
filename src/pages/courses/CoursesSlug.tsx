@@ -10,8 +10,9 @@ const CoursesSlug: React.FC = () => {
   const [showFullContent, setShowFullContent] = useState(false);
   const [openWeek, setOpenWeek] = useState<string | null>(null);
 
-  const weekSections = useMemo(() => {
+  const contentSections = useMemo(() => {
     if (!course?.fullContent || course.fullContent.length === 0) return null;
+    const preWeekItems: string[] = [];
     const sections: { title: string; items: string[] }[] = [];
     let current: { title: string; items: string[] } | null = null;
     for (const line of course.fullContent) {
@@ -21,10 +22,14 @@ const CoursesSlug: React.FC = () => {
         current = { title, items: [] };
         continue;
       }
-      if (current) current.items.push(line);
+      if (current) {
+        current.items.push(line);
+      } else {
+        preWeekItems.push(line);
+      }
     }
     if (current) sections.push(current);
-    return sections.length > 0 ? sections : null;
+    return { preWeekItems, weekSections: sections.length > 0 ? sections : null };
   }, [course?.fullContent]);
 
   if (!course && !category) {
@@ -98,7 +103,7 @@ const CoursesSlug: React.FC = () => {
                       {course.fullContent.length} topics included
                     </p>
                   </div>
-                  {!weekSections && course.fullContent.length > 20 && (
+                  {!contentSections?.weekSections && course.fullContent.length > 20 && (
                     <button
                       onClick={() => setShowFullContent((prev) => !prev)}
                       className="rounded-full border border-zyron-cyan/40 px-4 py-1.5 text-sm font-semibold text-zyron-cyan hover:bg-zyron-cyan/10"
@@ -107,9 +112,21 @@ const CoursesSlug: React.FC = () => {
                     </button>
                   )}
                 </div>
-                {weekSections ? (
+                {contentSections?.weekSections ? (
                   <div className="mt-4 space-y-3">
-                    {weekSections.map((section) => {
+                    {contentSections.preWeekItems.length > 0 && (
+                      <div className="rounded-xl border border-gray-100 bg-slate-50 p-4">
+                        <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2 text-gray-700 text-sm leading-relaxed">
+                          {contentSections.preWeekItems.map((item, idx) => (
+                            <li key={idx} className="flex gap-2">
+                              <span className="mt-1 h-2 w-2 flex-shrink-0 rounded-full bg-zyron-cyan/80" />
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    {contentSections.weekSections.map((section) => {
                       const isOpen = openWeek === section.title;
                       return (
                         <div key={section.title} className="rounded-xl border border-gray-100 bg-slate-50">
